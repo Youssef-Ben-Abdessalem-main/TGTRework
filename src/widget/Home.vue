@@ -9,7 +9,7 @@ import WhyChooseUs from "./Home/WhyChooseUs.vue";
 <template>
   <HeroSection />
   <div class="max-w-7xl mx-auto">
-    <SearchBooking />
+    <!-- <SearchBooking /> -->
     <FeaturedDestinations />
   </div>
   <PopularTours />
