@@ -1,0 +1,45 @@
+{
+  "name": "tunisiagotravelrework",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "prepare": "cypress install",
+    "test:e2e": "start-server-and-test preview http://localhost:4173 'cypress run --e2e'",
+    "test:e2e:dev": "start-server-and-test 'vite dev --port 4173' http://localhost:4173 'cypress open --e2e'",
+    "test:unit": "cypress run --component",
+    "test:unit:dev": "cypress open --component"
+  },
+  "dependencies": {
+    "@growthbunker/vueflags": "^0.1.14",
+    "@vueuse/core": "^14.1.0",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-vue-next": "^0.555.0",
+    "naive-ui": "^2.43.2",
+    "pinia": "^3.0.4",
+    "reka-ui": "^2.6.0",
+    "tailwind-merge": "^3.4.0",
+    "tailwindcss-animate": "^1.0.7",
+    "vue": "^3.5.25",
+    "vue-router": "^4.6.3",
+    "vue3-datepicker": "^0.4.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^6.0.2",
+    "autoprefixer": "^10.4.22",
+    "cypress": "^15.7.0",
+    "postcss": "^8.5.6",
+    "start-server-and-test": "^2.1.3",
+    "tailwindcss": "3.4",
+    "vite": "^7.2.4",
+    "vite-plugin-full-reload": "^1.2.0",
+    "vite-plugin-vue-devtools": "^8.0.5"
+  }
+}
