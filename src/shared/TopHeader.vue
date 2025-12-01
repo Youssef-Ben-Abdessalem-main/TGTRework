@@ -16,13 +16,25 @@ import {
   Phone,
   Sparkles,
 } from "lucide-vue-next";
-import { ref } from "vue";
-
+import { onMounted, ref, watch } from "vue";
 const CurrentCurrency = ref(currencies[0]);
 const CurrentLanguage = ref(languages[0]);
 
+onMounted(() => {
+  const savedCurrency = localStorage.getItem("selectedCurrency");
+  if (savedCurrency) {
+    CurrentCurrency.value = JSON.parse(savedCurrency);
+  } else {
+    localStorage.setItem("selectedCurrency", JSON.stringify(currencies[0]));
+  }
+});
+
 function selectedCurrency(currency) {
   CurrentCurrency.value = currency;
+  localStorage.setItem("selectedCurrency", JSON.stringify(currency));
+
+  const event = new CustomEvent("currencyChanged", { detail: currency });
+  window.dispatchEvent(event);
 }
 
 function setSelectedLanguage(lng) {

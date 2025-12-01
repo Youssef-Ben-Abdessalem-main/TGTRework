@@ -9,6 +9,7 @@ import {
   quickLinks,
   recentSearches,
 } from "@/assets/data/ShareData";
+import placeholder from "@/assets/placeholder.svg";
 
 import Badge from "@/components/ui/badge/Badge.vue";
 import Button from "@/components/ui/button/Button.vue";
@@ -51,37 +52,30 @@ import {
   CalendarDays,
   Car,
   Ticket,
+  HelpCircle,
 } from "lucide-vue-next";
 
-import { ref } from "vue";
-
-const terms = [
-  "5-star Hotels Tunis",
-  "Traditional Restaurants",
-  "Cheap Flights Tunisia",
-  "Cultural Events",
-  "Airport Transfer",
-];
+import { onMounted, ref, watch } from "vue";
 
 const searchOpen = ref(false);
 const searchQuery = ref("");
 
-const unreadNotifications = ref(0);
-const favoritesCount = ref(0);
+const unreadNotifications = ref(1);
+const favoritesCount = ref(3);
 const cartItemCount = ref(0);
-const selectedCurrency = ref({ symbol: "$" });
+
 const cartTotal = ref(420);
 
-const mobileMenuOpen = ref(false);
-const setMobileMenuOpen = () => {
-  mobileMenuOpen.value = !mobileMenuOpen.value;
-};
-
 const isScrolled = ref(false);
+const selectedCurrency = ref(
+  JSON.parse(localStorage.getItem("selectedCurrency")) || null
+);
 
-const removeFromCart = (itemId) => {
-  console.log("Remove item:", itemId);
-};
+onMounted(() => {
+  window.addEventListener("currencyChanged", (e) => {
+    selectedCurrency.value = e.detail;
+  });
+});
 
 const getServiceIcon = (type) => {
   switch (type) {
@@ -116,6 +110,11 @@ const getServiceColor = (type) => {
       return "text-primary";
   }
 };
+
+window.addEventListener("currencyChanged", (e) => {
+  const newCurrency = e.detail;
+  selectedCurrency.value = newCurrency;
+});
 </script>
 
 <template>
@@ -267,7 +266,7 @@ const getServiceColor = (type) => {
 
                 <span
                   v-if="unreadNotifications > 0"
-                  class="absolute -top-0.5 -right-0.5 h-4 w-4 rounded-full bg-destructive text-destructive-foreground text-[10px] font-bold flex items-center justify-center"
+                  class="absolute -top-0.5 -right-0.5 h-4 w-4 rounded-full bg-primary text-white text-[10px] font-bold flex items-center justify-center"
                 >
                   {{ unreadNotifications }}
                 </span>
@@ -332,7 +331,7 @@ const getServiceColor = (type) => {
 
                 <span
                   v-if="favoritesCount"
-                  class="absolute -top-0.5 -right-0.5 h-4 w-4 rounded-full bg-pink-500 text-white text-[10px] font-bold flex items-center justify-center"
+                  class="absolute -top-0.5 -right-0.5 h-4 w-4 rounded-full bg-primary text-white text-[10px] font-bold flex items-center justify-center"
                 >
                   {{ favoritesCount }}
                 </span>
@@ -343,7 +342,7 @@ const getServiceColor = (type) => {
             <SheetContent class="w-full sm:max-w-md p-0">
               <SheetHeader class="p-6 border-b">
                 <SheetTitle class="flex items-center gap-2">
-                  <Heart class="h-5 w-5 text-pink-500" />
+                  <Heart class="h-5 w-5 text-secondary" />
                   Saved Places ({{ favoritesCount }})
                 </SheetTitle>
               </SheetHeader>
@@ -352,10 +351,10 @@ const getServiceColor = (type) => {
                   <div
                     v-for="item in mockFavorites"
                     :key="item.id"
-                    class="flex gap-3 p-3 rounded-xl bg-muted/50 hover:bg-muted transition-colors"
+                    class="flex gap-3 p-3 rounded-xl bg-muted/50 hover:bg-half-secondary cursor-pointer transition-colors"
                   >
                     <img
-                      :src="item.image || '/placeholder.svg'"
+                      :src="item.image || placeholder"
                       :alt="item.name"
                       class="w-16 h-16 rounded-lg object-cover flex-shrink-0"
                     />
@@ -403,250 +402,233 @@ const getServiceColor = (type) => {
                   </div>
                 </div>
               </ScrollArea>
-              <SheetFooter class="p-4 border-t">
+              <SheetFooter class="border-t flex justify-center p-4">
                 <Button class="w-full">View All Saved Places</Button>
               </SheetFooter>
             </SheetContent>
           </Sheet>
-        </div>
 
-        <!-- <div class="hidden lg:flex items-center gap-1">
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                class="relative text-foreground/70 hover:text-primary hover:bg-primary/5"
+              >
+                <ShoppingCart class="h-5 w-5" />
+
+                <span
+                  v-if="cartItemCount > 0"
+                  class="absolute -top-0.5 -right-0.5 h-4 w-4 rounded-full bg-accent text-accent-foreground text-[10px] font-bold flex items-center justify-center"
+                >
+                  {{ cartItemCount }}
+                </span>
+
+                <span class="sr-only">Cart</span>
+              </Button>
+            </SheetTrigger>
+            <SheetContent class="w-full sm:max-w-md p-0">
+              <SheetHeader class="p-6 border-b">
+                <SheetTitle class="flex items-center gap-2">
+                  <ShoppingCart class="h-5 w-5 text-primary" />
+                  Your Booking Cart ({{ cartItemCount }})
+                </SheetTitle>
+              </SheetHeader>
+              <ScrollArea class="h-[calc(100vh-280px)]">
+                <div class="p-4 flex flex-col gap-3">
+                  <div
+                    v-for="item in mockCartItems"
+                    :key="item.id"
+                    class="flex gap-3 p-3 rounded-xl bg-muted/50"
+                  >
+                    <div class="relative">
+                      <img
+                        :src="item.image || placeholder"
+                        :alt="item.name"
+                        class="w-20 h-20 rounded-lg object-cover"
+                      />
+                      <div
+                        :class="[
+                          `absolute
+                        -top-1
+                        -left-1
+                        p-1
+                        rounded-md
+                        bg-background
+                        shadow
+                        ${getServiceColor(item.type)}`,
+                        ]"
+                      >
+                        <Icon class="h-3 w-3" />
+                      </div>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                      <p class="font-medium text-sm">{{ item.name }}</p>
+                      <p class="text-xs text-muted-foreground mt-0.5">
+                        {{ item.details }}
+                      </p>
+                      <div
+                        class="flex items-center gap-1 mt-1 text-xs text-muted-foreground"
+                      >
+                        <CalendarDays class="h-3 w-3" />
+                        {{ item.date }}
+                      </div>
+                      <p class="text-primary font-semibold mt-2">
+                        {{ selectedCurrency.symbol }} {{ item.price }}
+                      </p>
+                    </div>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      class="text-muted-foreground hover:text-destructive h-8 w-8 flex-shrink-0"
+                    >
+                      <X class="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
+              </ScrollArea>
+              <div class="p-4 border-t bg-muted/30">
+                <div class="flex items-center justify-between mb-2">
+                  <span class="text-muted-foreground">Subtotal</span>
+                  <span class="font-medium">
+                    {{ selectedCurrency.symbol }} {{ cartTotal }}
+                  </span>
+                </div>
+                <div class="flex items-center justify-between mb-2 text-sm">
+                  <span class="text-muted-foreground">Service Fee</span>
+                  <span>{{ selectedCurrency.symbol }}15</span>
+                </div>
+                <Separator class="my-3" />
+                <div class="flex items-center justify-between mb-4">
+                  <span class="font-semibold">Total</span>
+                  <span class="text-xl font-bold text-primary">
+                    {{ selectedCurrency.symbol }} {{ cartTotal + 15 }}
+                  </span>
+                </div>
+                <Button class="w-full h-12 text-base gap-2" size="lg">
+                  <CreditCard class="h-5 w-5" />
+                  Proceed to Payment
+                </Button>
+                <Button variant="ghost" class="w-full mt-2 text-muted-foreground">
+                  Continue Browsing
+                </Button>
+              </div>
+            </SheetContent>
+          </Sheet>
+
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
                 variant="ghost"
-                class="flex items-end gap-1 text-foreground/80 hover:text-primary hover:bg-transparent"
+                size="icon"
+                class="text-foreground/70 hover:text-primary hover:bg-primary/5"
               >
-                Services
-                <ChevronDown class="h-2 w-2" />
+                <User class="h-5 w-5" />
+                <span class="sr-only">Account</span>
               </Button>
             </DropdownMenuTrigger>
-
-            <DropdownMenuContent class="w-80 p-2">
-              <DropdownMenuLabel class="text-primary">Our Services</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-
-              <DropdownMenuItem v-for="service in services" :key="service.href" asChild>
-                <RouterLink
-                  :to="service.href"
-                  class="flex items-start gap-3 p-2 cursor-pointer"
-                >
-                  <div class="p-2 rounded-lg bg-primary/10 text-primary">
-                    <component :is="service.icon" class="h-5 w-5" />
-                  </div>
-
-                  <div class="flex flex-col">
-                    <span class="font-medium">{{ service.label }}</span>
-                    <span class="text-xs text-muted-foreground">{{
-                      service.description
-                    }}</span>
-                  </div>
-                </RouterLink>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-          <RouterLink to="/deals">Deals</RouterLink>
-          <RouterLink to="/about">About Us</RouterLink>
-          <RouterLink to="/contact">Contact</RouterLink>
-        </div> -->
-
-        <!-- <div class="flex items-center gap-3">
-          <Popover :open="searchOpen" :onOpenChange="setSearchOpen">
-            <PopoverTrigger asChild>
-              <Button variant="ghost" size="icon" class="icon-btn">
-                <Search class="h-5 w-5" />
-              </Button>
-            </PopoverTrigger>
-
-            <PopoverContent class="w-80 p-3" align="end">
-              <div class="flex flex-col gap-3">
-                <div class="flex items-center gap-2">
-                  <Search class="h-4 w-4 text-muted-foreground" />
-                  <Input placeholder="Search hotels, restaurants..." />
-                </div>
-
-                <Separator />
-
-                <div class="text-xs text-muted-foreground">Popular searches:</div>
-
-                <div class="flex flex-wrap gap-2">
-                  <Badge
-                    v-for="term in terms"
-                    :key="term"
-                    variant="secondary"
-                    class="cursor-pointer hover:bg-primary hover:text-primary-foreground"
-                  >
-                    {{ term }}
-                  </Badge>
-                </div>
-              </div>
-            </PopoverContent>
-          </Popover>
-
-          <Sheet>
-            <SheetTrigger as-child>
-              <Button variant="ghost" size="icon" class="icon-btn">
-                <Heart class="h-5 w-5" />
-                <span
-                  v-if="favoritesCount > 0"
-                  class="absolute -top-0.5 -right-0.5 h-4 w-4 rounded-full bg-primary text-primary-foreground text-xs flex items-center justify-center"
-                >
-                  {{ favoritesCount }}
-                </span>
-              </Button>
-            </SheetTrigger>
-
-            <SheetContent>
-              <SheetHeader>
-                <SheetTitle class="flex items-center gap-2">
-                  <Heart class="h-5 w-5 text-primary" /> Saved Places
-                </SheetTitle>
-              </SheetHeader>
-
-              <div class="mt-6 flex flex-col gap-4">
-                <div
-                  v-for="item in mockFavorites"
-                  :key="item.id"
-                  class="flex items-center justify-between p-3 rounded-lg bg-muted/50"
-                >
-                  <div>
-                    <span class="font-medium">{{ item.name }}</span>
-                    <div class="flex items-center gap-2 text-sm text-muted-foreground">
-                      <span>{{ item.type }}</span>
-                      <span class="flex items-center gap-1">
-                        <Star class="h-3 w-3 fill-primary text-primary" />
-                        {{ item.rating }}
-                      </span>
+            <DropdownMenuContent align="end" class="w-64 p-0">
+              <template v-if="isLoggedIn">
+                <div class="p-4 border-b bg-muted/30">
+                  <div class="flex items-center gap-3">
+                    <div
+                      class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center"
+                    >
+                      <User class="h-5 w-5 text-primary" />
+                    </div>
+                    <div>
+                      <p class="font-medium">Ahmed Ben Ali</p>
+                      <p class="text-xs text-muted-foreground">Gold Member</p>
                     </div>
                   </div>
-
-                  <Button variant="ghost" size="icon" class="text-destructive">
-                    <X class="h-4 w-4" />
-                  </Button>
-                </div>
-
-                <Separator />
-
-                <Button class="w-full">View All Saved Places</Button>
-              </div>
-            </SheetContent>
-          </Sheet>
-
-          <Sheet>
-            <SheetTrigger as-child>
-              <Button variant="ghost" size="icon" class="icon-btn">
-                <ShoppingCart class="h-5 w-5" />
-                <span
-                  v-if="cartItemCount > 0"
-                  class="absolute -top-0.5 -right-0.5 h-4 w-4 rounded-full bg-primary text-primary-foreground text-xs flex items-center justify-center"
-                >
-                  {{ cartItemCount }}
-                </span>
-              </Button>
-            </SheetTrigger>
-
-            <SheetContent>
-              <SheetHeader>
-                <SheetTitle class="flex items-center gap-2">
-                  <ShoppingCart class="h-5 w-5 text-primary" />
-                  My Cart ({{ cartItemCount }})
-                </SheetTitle>
-              </SheetHeader>
-
-              <div class="mt-6 flex flex-col gap-4">
-                <div
-                  v-for="item in mockCartItems"
-                  :key="item.id"
-                  class="flex gap-3 p-3 rounded-lg bg-muted/50"
-                >
-                  <img :src="item.image" class="w-16 h-16 rounded-lg" />
-
-                  <div class="flex-1">
-                    <span class="font-medium">{{ item.name }}</span>
-
-                    <span class="flex items-center gap-1 text-sm text-muted-foreground">
-                      <Calendar class="h-3 w-3" />
-                      {{ item.date }}
-                    </span>
-
-                    <span class="text-primary font-semibold mt-1 block">
-                      {{ selectedCurrency.symbol }}{{ item.price }}
-                    </span>
+                  <div class="flex items-center gap-2 mt-3 p-2 rounded-lg bg-primary/10">
+                    <Award class="h-4 w-4 text-primary" />
+                    <span class="text-xs text-primary font-medium"
+                      >2,450 Points Available</span
+                    >
                   </div>
-
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    class="text-destructive"
-                    @click="removeFromCart(item.id)"
-                  >
-                    <X class="h-4 w-4" />
-                  </Button>
                 </div>
-
-                <Separator />
-
-                <div class="flex items-center justify-between text-lg font-semibold">
-                  <span>Total</span>
-                  <span class="text-primary"
-                    >{{ selectedCurrency.symbol }}{{ cartTotal }}</span
-                  >
+                <div class="p-2">
+                  <DropdownMenuGroup>
+                    <DropdownMenuItem>
+                      <Ticket class="h-4 w-4 mr-2" />
+                      My Bookings
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <Heart class="h-4 w-4 mr-2" />
+                      Saved Places
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <History class="h-4 w-4 mr-2" />
+                      Booking History
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <Wallet class="h-4 w-4 mr-2" />
+                      Payment Methods
+                    </DropdownMenuItem>
+                  </DropdownMenuGroup>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuGroup>
+                    <DropdownMenuItem>
+                      <Gift class="h-4 w-4 mr-2" />
+                      Rewards & Points
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <Settings class="h-4 w-4 mr-2" />
+                      Account Settings
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <HelpCircle class="h-4 w-4 mr-2" />
+                      Help & Support
+                    </DropdownMenuItem>
+                  </DropdownMenuGroup>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem class="text-destructive">
+                    <LogOut class="h-4 w-4 mr-2" />
+                    Sign Out
+                  </DropdownMenuItem>
                 </div>
-
-                <Button class="w-full" size="lg">
-                  <CreditCard class="h-4 w-4 mr-2" /> Complete Booking
-                </Button>
-
-                <Button variant="outline" class="w-full">Continue Browsing</Button>
-              </div>
-            </SheetContent>
-          </Sheet>
-
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" class="icon-btn">
-                <User class="h-5 w-5" />
-              </Button>
-            </DropdownMenuTrigger>
-
-            <DropdownMenuContent align="end" class="w-56">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-
-              <DropdownMenuItem><LogIn class="icon" /> Sign In</DropdownMenuItem>
-              <DropdownMenuItem
-                ><UserPlus class="icon" /> Create Account</DropdownMenuItem
-              >
-
-              <DropdownMenuSeparator />
-
-              <DropdownMenuItem
-                ><Calendar class="icon" /> My Reservations</DropdownMenuItem
-              >
-              <DropdownMenuItem><Heart class="icon" /> Saved Places</DropdownMenuItem>
-              <DropdownMenuItem
-                ><CreditCard class="icon" /> Payment Methods</DropdownMenuItem
-              >
-              <DropdownMenuItem><Bell class="icon" /> Booking Alerts</DropdownMenuItem>
-
-              <DropdownMenuSeparator />
-
-              <DropdownMenuItem
-                ><Headphones class="icon" /> Help & Support</DropdownMenuItem
-              >
+              </template>
+              <template v-else>
+                <div class="p-4 border-b">
+                  <p class="font-medium">Welcome to Tunisia Go</p>
+                  <p class="text-xs text-muted-foreground mt-1">
+                    Sign in to access your bookings & rewards
+                  </p>
+                </div>
+                <div class="p-2">
+                  <DropdownMenuItem class="p-0">
+                    <Button
+                      class="w-full justify-start gap-2 hover:bg-secondary !px-1"
+                      variant="ghost"
+                    >
+                      <LogIn class="h-4 w-4" />
+                      Sign In
+                    </Button>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem class="p-0">
+                    <Button
+                      class="w-full justify-start gap-2 hover:bg-secondary !px-1"
+                      variant="ghost"
+                    >
+                      <UserPlus class="h-4 w-4" />
+                      Create Account
+                    </Button>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem class="!px-1">
+                    <Ticket class="h-4 w-4 mr-2" />
+                    Track Booking
+                  </DropdownMenuItem>
+                  <DropdownMenuItem class="!px-1">
+                    <HelpCircle class="h-4 w-4 mr-2" />
+                    Help & Support
+                  </DropdownMenuItem>
+                </div>
+              </template>
             </DropdownMenuContent>
           </DropdownMenu>
-
-          <Button
-            variant="ghost"
-            size="icon"
-            class="lg:hidden"
-            @click="setMobileMenuOpen"
-          >
-            <X v-if="mobileMenuOpen" class="h-6 w-6" />
-            <Menu v-else class="h-6 w-6" />
-          </Button>
-        </div> -->
+        </div>
       </div>
     </div>
   </nav>
