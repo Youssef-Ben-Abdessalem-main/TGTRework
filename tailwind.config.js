@@ -5,21 +5,31 @@ export default {
     extend: {
       colors: {
         primary: {
-          DEFAULT: "var(--primary)",
-          foreground: "var(--primary-foreground)",
+          DEFAULT: "rgb(var(--primary) / <alpha-value>)",
+          foreground: "rgb(var(--primary-foreground) / <alpha-value>)",
         },
         secondary: {
-          DEFAULT: "var(--secondary)",
-          foreground: "var(--secondary-foreground)",
+          DEFAULT: "rgb(var(--secondary) / <alpha-value>)",
+          foreground: "rgb(var(--secondary-foreground) / <alpha-value>)",
+        },
+        third: {
+          DEFAULT: "rgb(var(--thirdly) / <alpha-value>)",
+        },
+        muted: {
+          DEFAULT: "rgb(var(--muted) / <alpha-value>)",
+        },
+        ocean: {
+          deep: "rgb(var(--ocean-deep) / <alpha-value>)",
+          mid: "rgb(var(--ocean-mid) / <alpha-value>)",
+          light: "rgb(var(--ocean-light) / <alpha-value>)",
+        },
+        sand: {
+          deep: "rgb(var(--orange-deep) / <alpha-value>)",
+          mid: "rgb(var(--orange-mid) / <alpha-value>)",
+          light: "rgb(var(--orange-light) / <alpha-value>)",
         },
         "half-primary": "rgba(14, 20, 40, 0.5)",
         "half-secondary": "#f6ede0",
-        third: {
-          DEFAULT: "var(--thirdly)",
-        },
-        muted: {
-          DEFAULT: "var(--muted)",
-        },
       },
     },
   },

@@ -4,6 +4,8 @@ import {
   Car,
   Headphones,
   Hotel,
+  Map,
+  MapPin,
   MapPinned,
   Percent,
   Plane,
@@ -269,14 +271,14 @@ export const coreServices = [
     color: "bg-orange-500/10 text-orange-600",
     featured: ["Dar El Jeld", "Le Baroque", "Sidi Bou Fares"],
   },
-  {
-    href: "/flights",
-    label: "Flights",
-    icon: Plane,
-    description: "Domestic & international flights",
-    color: "bg-sky-500/10 text-sky-600",
-    featured: ["Tunis-Paris", "Djerba-London", "Monastir-Berlin"],
-  },
+  // {
+  //   href: "/flights",
+  //   label: "Flights",
+  //   icon: Plane,
+  //   description: "Domestic & international flights",
+  //   color: "bg-sky-500/10 text-sky-600",
+  //   featured: ["Tunis-Paris", "Djerba-London", "Monastir-Berlin"],
+  // },
   {
     href: "/events",
     label: "Events",
@@ -293,16 +295,69 @@ export const coreServices = [
     color: "bg-green-500/10 text-green-600",
     featured: ["Airport Transfers", "Private Drivers", "Car Rentals"],
   },
+  {
+    href: "/destination",
+    label: "Destinations",
+    icon: MapPin, // Font Awesome icon
+    description: "Explore beautiful destinations across Tunisia",
+    color: "text-red-600 bg-red-50", // Tunisian flag colors
+    featured: ["Djerba", "Carthage", "Sidi Bou Said"], // Popular Tunisian destinations
+  },
 ];
 export const quickLinks = [
   { href: "/deals", label: "Deals", icon: Percent },
   { href: "/destinations", label: "Destinations", icon: MapPinned },
-  // { href: "/blog", label: "Blog", icon: TrendingUp },
-  // { href: "/about", label: "About", icon: Users },
-  // { href: "/contact", label: "Contact", icon: Headphones },
 ];
 export const recentSearches = [
   { query: "Hotels in Djerba", type: "hotel" },
   { query: "Flights to Tunis", type: "flight" },
   { query: "Restaurants near Medina", type: "restaurant" },
+];
+
+export const tabs = [
+  { value: "hotels", label: "Hotels", icon: Hotel },
+
+  { value: "restaurants", label: "Restaurants", icon: UtensilsCrossed },
+  { value: "events", label: "Events", icon: CalendarDays },
+  { value: "create_tour", label: "Create Your Tour", icon: MapPinned },
+];
+
+export const tunisianCities = [
+  { value: "tunis", label: "Tunis", airport: "TUN" },
+  { value: "djerba", label: "Djerba", airport: "DJE" },
+  { value: "monastir", label: "Monastir", airport: "MIR" },
+  { value: "sfax", label: "Sfax", airport: "SFA" },
+  { value: "tozeur", label: "Tozeur", airport: "TOE" },
+  { value: "hammamet", label: "Hammamet" },
+  { value: "sousse", label: "Sousse" },
+  { value: "sidi-bou-said", label: "Sidi Bou Said" },
+  { value: "carthage", label: "Carthage" },
+  { value: "kairouan", label: "Kairouan" },
+];
+
+export const cuisineTypes = [
+  { value: "traditional", label: "Traditional Tunisian" },
+  { value: "seafood", label: "Seafood" },
+  { value: "fine-dining", label: "Fine Dining" },
+  { value: "casual", label: "Casual Dining" },
+  { value: "cafe", label: "Cafes & Bakeries" },
+  { value: "international", label: "International" },
+];
+
+export const eventCategories = [
+  { value: "music", label: "Music & Concerts" },
+  { value: "cultural", label: "Cultural & Arts" },
+  { value: "sports", label: "Sports" },
+  { value: "food", label: "Food & Wine" },
+  { value: "nightlife", label: "Nightlife" },
+  { value: "tours", label: "Guided Tours" },
+];
+
+export const vehicleTypes = [
+  { value: "economy", label: "Economy Car" },
+  { value: "suv", label: "SUV" },
+  { value: "luxury", label: "Luxury" },
+  { value: "minivan", label: "Minivan" },
+  { value: "transfer", label: "Airport Transfer" },
+  { value: "driver", label: "Private Driver" },
 ];

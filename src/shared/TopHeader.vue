@@ -43,7 +43,7 @@ function setSelectedLanguage(lng) {
 </script>
 
 <template>
-  <div class="bg-primary text-white py-2 px-4 hidden lg:block">
+  <div class="bg-ocean-deep text-white py-2 px-4 hidden lg:block">
     <div class="flex justify-between items-center text-sm">
       <div class="flex items-center gap-6">
         <a
