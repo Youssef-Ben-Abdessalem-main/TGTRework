@@ -7,6 +7,7 @@ import FeaturedArticles from "@/widget/articles/components/FeaturedArticles.vue"
 import TravelGuides from "@/widget/articles/components/TravelGuides.vue";
 import DestinationGuides from "@/widget/articles/components/DestinationGuides.vue";
 import CitySpotlight from "@/widget/articles/components/CitySpotlight.vue";
+import WhoWeAre from "@/widget/about-us/WhoWeAre.vue";
 import LastAtricles from "./LastAtricles.vue";
 
 const breadcrumbs = [
@@ -29,7 +30,7 @@ const breadcrumbs = [
     <TravelGuides />
     <DestinationGuides />
     <CitySpotlight />
-
+    <WhoWeAre />
     <LastAtricles :IsMore="false" />
   </div>
 </template>

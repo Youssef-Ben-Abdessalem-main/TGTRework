@@ -58,12 +58,95 @@ const guides = [
     readTime: 8,
     link: "/blog/details",
   },
+
+  {
+    id: 5,
+    title: "Discovering the Hidden Beaches of Mahdia",
+    category: "Mahdia",
+    image:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVSJjfUjiTRUo050FgYM4eRn4mSRJHhv5CSw&s",
+    excerpt:
+      "Mahdia offers pristine, turquoise beaches perfect for relaxation and scenic walks. A peaceful escape blending beauty and local charm.",
+    author: "Tunisia Go Travel",
+    avatar:
+      "https://secure.gravatar.com/avatar/45f396be357ec7ea96cd83f636aadf2399ea64cb3fd2a0fc370b76079e9da706?s=44&d=mm&r=g",
+    readTime: 6,
+    link: "/blog/details",
+  },
+  {
+    id: 6,
+    title: "Sousse Nightlife Guide: Best Clubs & Lounges",
+    category: "Sousse",
+    image:
+      "https://media.evendo.com/locations-resized/BarImages/360x263/fa3fc46e-03d1-40ee-b74d-cb9a220356c1",
+    excerpt:
+      "Sousse is one of Tunisia’s most dynamic cities, offering a nightlife filled with energy, music, and unforgettable experiences.",
+    author: "Tunisia Go Travel",
+    avatar:
+      "https://secure.gravatar.com/avatar/45f396be357ec7ea96cd83f636aadf2399ea64cb3fd2a0fc370b76079e9da706?s=44&d=mm&r=g",
+    readTime: 7,
+    link: "/blog/details",
+  },
+  {
+    id: 7,
+    title: "Exploring the Medina of Tunis: Top Things to Do",
+    category: "Tunis",
+    image:
+      "https://www.mywanderlust.pl/wp-content/uploads/2023/07/things-to-do-in-tunis-tunisia-96.jpg",
+    excerpt:
+      "The Medina of Tunis, a UNESCO World Heritage site, offers vibrant souks, historical mosques, and narrow alleys rich in culture.",
+    author: "Tunisia Go Travel",
+    avatar:
+      "https://secure.gravatar.com/avatar/45f396be357ec7ea96cd83f636aadf2399ea64cb3fd2a0fc370b76079e9da706?s=44&d=mm&r=g",
+    readTime: 5,
+    link: "/blog/details",
+  },
+  {
+    id: 8,
+    title: "Kairouan: A Journey Through Tunisia’s Spiritual Capital",
+    category: "Kairouan",
+    image:
+      "https://media-cdn.tripadvisor.com/media/attractions-splice-spp-720x480/12/20/9b/0b.jpg",
+    excerpt:
+      "Kairouan is known for its rich Islamic heritage, ancient monuments, and traditional craftsmanship, offering a deeply cultural visit.",
+    author: "Tunisia Go Travel",
+    avatar:
+      "https://secure.gravatar.com/avatar/45f396be357ec7ea96cd83f636aadf2399ea64cb3fd2a0fc370b76079e9da706?s=44&d=mm&r=g",
+    readTime: 6,
+    link: "/blog/details",
+  },
+  {
+    id: 9,
+    title: "Gabès Oasis: Exploring the Gateway Between Sea and Desert",
+    category: "Gabès",
+    image:
+      "https://bunny-wp-pullzone-zygrvi9whu.b-cdn.net/wp-content/uploads/2025/09/gabes-600-1280x720.jpg",
+    excerpt:
+      "Gabès is one of the world’s rare coastal oases, offering unique landscapes where palm groves meet the Mediterranean Sea.",
+    author: "Tunisia Go Travel",
+    avatar:
+      "https://secure.gravatar.com/avatar/45f396be357ec7ea96cd83f636aadf2399ea64cb3fd2a0fc370b76079e9da706?s=44&d=mm&r=g",
+    readTime: 5,
+    link: "/blog/details",
+  },
 ];
 
 const currentSlide = ref(0);
 const itemsPerSlide = ref(3);
 const slideWidth = computed(() => 100 / itemsPerSlide.value);
 const totalSlides = computed(() => Math.ceil(guides.length / itemsPerSlide.value));
+
+const updateItemsPerSlide = () => {
+  const width = window.innerWidth;
+  if (width >= 1024) {
+    itemsPerSlide.value = 3;
+  } else if (width >= 768) {
+    itemsPerSlide.value = 2;
+  } else {
+    itemsPerSlide.value = 1;
+  }
+  currentSlide.value = 0;
+};
 
 const nextSlide = () => {
   currentSlide.value = (currentSlide.value + 1) % totalSlides.value;
@@ -81,10 +164,13 @@ const goToSlide = (index) => {
 let autoplayInterval;
 
 onMounted(() => {
+  updateItemsPerSlide();
+  window.addEventListener("resize", updateItemsPerSlide);
   autoplayInterval = setInterval(nextSlide, 5000);
 });
 
 onUnmounted(() => {
+  window.removeEventListener("resize", updateItemsPerSlide);
   if (autoplayInterval) {
     clearInterval(autoplayInterval);
   }
@@ -134,7 +220,7 @@ onUnmounted(() => {
       <div class="relative overflow-hidden">
         <div
           class="flex transition-transform duration-500 ease-in-out items-stretch"
-          :style="{ transform: `translateX(-${currentSlide * slideWidth}%)` }"
+          :style="{ transform: `translateX(-${currentSlide * 100}%)` }"
         >
           <div
             v-for="guide in guides"

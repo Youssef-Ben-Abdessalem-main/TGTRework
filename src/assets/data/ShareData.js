@@ -152,6 +152,13 @@ export const destinations = [
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_IXskPLpw76Wgz6HowNejbVmjyaGjsQsbFA&s",
     tours: 6,
   },
+  {
+    name: "Tozeur",
+    description: "Oasis town & palm groves",
+    image:
+      "https://www.kanaga-at.com/wp-content/uploads/2021/07/tunisia_oasi_di_montagna_foto_i._fornasiero.jpg",
+    tours: 9,
+  },
 ];
 
 export const tours = [
@@ -360,4 +367,54 @@ export const vehicleTypes = [
   { value: "minivan", label: "Minivan" },
   { value: "transfer", label: "Airport Transfer" },
   { value: "driver", label: "Private Driver" },
+];
+export const bestHotels = [
+  {
+    name: "Four Seasons Tunis",
+    location: "Tunis, Tunisia",
+    rating: 4.9,
+    price: "$320",
+    period: "per night",
+    checkIn: "Dec 15, 2024",
+    checkOut: "Dec 18, 2024",
+    guests: 2,
+    image:
+      "https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800&q=80",
+  },
+  {
+    name: "Hotel Barceló Sousse",
+    location: "Sousse, Tunisia",
+    rating: 4.8,
+    price: "$180",
+    period: "per night",
+    checkIn: "Dec 15, 2024",
+    checkOut: "Dec 18, 2024",
+    guests: 2,
+    image:
+      "https://www.destinationtunisie.info/wp-content/uploads/2019/05/hotel_barcelo_sousse_-marhaba.jpg",
+  },
+  {
+    name: "Movenpick Gammarth",
+    location: "Gammarth, Tunisia",
+    rating: 4.7,
+    price: "$220",
+    period: "per night",
+    checkIn: "Dec 15, 2024",
+    checkOut: "Dec 18, 2024",
+    guests: 2,
+    image:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQhD6p1oJTO4cxcIzMN0BvZX6aTMdcgmURzLQ&s",
+  },
+  {
+    name: "The Residence Tunis",
+    location: "Gammarth, Tunisia",
+    rating: 4.6,
+    price: "$280",
+    period: "per night",
+    checkIn: "Dec 15, 2024",
+    checkOut: "Dec 18, 2024",
+    guests: 2,
+    image:
+      "https://www.resabo.com/cr.fwk/images/hotels/Hotel-8905-20230102-095053.jpg",
+  },
 ];

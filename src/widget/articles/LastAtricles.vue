@@ -54,7 +54,7 @@ const articles = [
 </script>
 
 <template>
-  <div :class="[props.IsMore ? 'pt-16' : '']">
+  <div :class="[props.IsMore ? 'pt-16' : 'pt-28']">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-12">
         <div class="flex flex-col justify-center items-center">

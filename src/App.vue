@@ -7,6 +7,8 @@ import Footer from "./shared/Footer.vue";
 import Newsletter from "./shared/Newsletter.vue";
 import { ArrowUp, ArrowUpToLine } from "lucide-vue-next";
 import PartnerBorder from "@/widget/partnership/PartnerBorder.vue";
+import "vue-sonner/style.css";
+import { Toaster } from "@/components/ui/sonner";
 
 const showScrollTop = ref(false);
 
@@ -40,7 +42,7 @@ onUnmounted(() => {
     <PartnerBorder />
     <Footer />
     <div
-      class="fixed bottom-10 right-10 w-16 h-16 bg-ocean-mid/50 flex justify-center items-center cursor-pointer rounded-full hover:bg-ocean-mid/70 transition-all"
+      class="z-50 fixed bottom-10 right-10 w-16 h-16 bg-ocean-mid/50 flex justify-center items-center cursor-pointer rounded-full hover:bg-ocean-mid/70 transition-all"
       @click="ScrollTop()"
       v-if="showScrollTop"
     >
@@ -50,6 +52,7 @@ onUnmounted(() => {
         <ArrowUp class="w-8 h-8 text-white" />
       </div>
     </div>
+    <Toaster position="top-center" class="bg-ocean-deep" />
   </div>
 </template>
 

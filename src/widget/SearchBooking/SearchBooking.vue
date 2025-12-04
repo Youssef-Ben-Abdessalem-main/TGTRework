@@ -14,9 +14,9 @@ const activeTab = ref("hotels");
 </script>
 
 <template>
-  <section class="relative z-30 -mt-16 md:-mt-24">
+  <section class="relative z-30 -mt-16 md:-mt-24 overflow-hidden">
     <div
-      class="shadow-xl rounded-3xl border-4 border-sand-mid w-full bg-white backdrop-blur-sm"
+      class="shadow-xl rounded-tl-3xl border-t-4 border-sand-mid overflow-hidden w-full bg-white backdrop-blur-sm"
     >
       <TabsRoot v-model="activeTab" class="w-full">
         <SearchTabs :active-tab="activeTab" />
@@ -39,7 +39,7 @@ const activeTab = ref("hotels");
       </TabsRoot>
 
       <div
-        class="bg-gradient-to-r rounded-b-[18px] from-sand-mid/50 via-white to-sand-mid/50 px-8 py-5 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-4"
+        class="bg-gradient-to-r rounded-br-3xl border-b-4 border-sand-mid from-sand-mid/50 via-white to-sand-mid/50 px-8 py-5 border-t flex flex-col sm:flex-row items-center justify-between gap-4"
       >
         <div class="flex items-center gap-4">
           <div class="p-2.5 rounded-xl bg-white shadow-sm">

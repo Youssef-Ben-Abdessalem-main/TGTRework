@@ -22,7 +22,7 @@ async function handleTabClick(tab) {
 
 <template>
   <TabsList
-    class="w-full flex justify-start rounded-t-[18px] border-b border-gray-100 bg-gradient-to-b from-gray-50 to-white h-auto p-0 overflow-x-auto flex-nowrap"
+    class="w-full flex justify-start bg-gradient-to-b from-gray-50 to-white h-auto p-0 overflow-x-auto flex-nowrap"
   >
     <TabsTrigger
       v-for="tab in tabs"
