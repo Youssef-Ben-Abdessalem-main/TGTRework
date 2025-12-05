@@ -42,7 +42,7 @@ onUnmounted(() => {
     <PartnerBorder />
     <Footer />
     <div
-      class="z-50 fixed bottom-10 right-10 w-16 h-16 bg-ocean-mid/50 flex justify-center items-center cursor-pointer rounded-full hover:bg-ocean-mid/70 transition-all"
+      class="z-[1000] fixed bottom-10 right-10 w-16 h-16 bg-ocean-mid/50 flex justify-center items-center cursor-pointer rounded-full hover:bg-ocean-mid/70 transition-all"
       @click="ScrollTop()"
       v-if="showScrollTop"
     >

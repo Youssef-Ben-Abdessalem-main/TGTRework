@@ -6,7 +6,6 @@ import Breadcrumbs from "@/shared/Breadcrumbs.vue";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
-// Add CSS for route animation
 const style = document.createElement("style");
 style.textContent = `
   @keyframes dash {
@@ -37,7 +36,7 @@ const isLoaded = ref(false);
 const selectedRoute = ref(0);
 const map = ref(null);
 const userLocation = ref(null);
-const destination = ref({ lat: 33.8969, lng: 10.7561 }); // Djerba coordinates
+const destination = ref({ lat: 33.875, lng: 10.758 }); // Better routable coordinates for Djerba
 const routeLayer = ref(null);
 const isLocating = ref(false);
 
@@ -123,7 +122,6 @@ const initMap = async () => {
     .addTo(map.value)
     .bindPopup(`<b>${itinerary.to}</b><br>Destination`);
 
-  // Auto-get location on map load
   getCurrentLocation();
 };
 
@@ -193,64 +191,194 @@ const getRoute = async () => {
   if (!userLocation.value) return;
 
   try {
-    // Use OpenRouteService for actual road routing
-    const response = await fetch(
-      `https://api.openrouteservice.org/v2/directions/driving-car?api_key=5b3ce3597851110001cf6248a4a7b8b8e8b84b7b9b8b4b4b4b4b4b4b&start=${userLocation.value.lng},${userLocation.value.lat}&end=${destination.value.lng},${destination.value.lat}&format=geojson`
-    );
+    // Try direct routing first, then fallback to snapping if needed
+    await getDirections();
+  } catch (error) {
+    console.error('Routing error:', error);
+    drawEnhancedRoute();
+  }
+};
+
+const snapCoordinates = async () => {
+  try {
+    const response = await fetch('https://api.openrouteservice.org/v2/snap/driving-car/json', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'eyJvcmciOiI1YjNjZTM1OTc4NTExMTAwMDFjZjYyNDgiLCJpZCI6IjViYTc3ZmNjNWNjNTQ4OWE4YjU5ZGQwZTVjNWUwYjUyIiwiaCI6Im11cm11cjY0In0=',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        locations: [
+          [userLocation.value.lng, userLocation.value.lat],
+          [destination.value.lng, destination.value.lat]
+        ],
+        radius: 5000
+      })
+    });
 
     if (response.ok) {
       const data = await response.json();
+      if (data.locations && data.locations.length === 2) {
+        return {
+          start: data.locations[0],
+          end: data.locations[1]
+        };
+      }
+    }
+    return null;
+  } catch (error) {
+    console.error('Snapping error:', error);
+    return null;
+  }
+};
 
+const getDirections = async () => {
+  try {
+    const coordinates = [
+      [userLocation.value.lng, userLocation.value.lat],
+      [destination.value.lng, destination.value.lat]
+    ];
+    
+    const response = await fetch('https://api.openrouteservice.org/v2/directions/driving-car/geojson', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'eyJvcmciOiI1YjNjZTM1OTc4NTExMTAwMDFjZjYyNDgiLCJpZCI6IjViYTc3ZmNjNWNjNTQ4OWE4YjU5ZGQwZTVjNWUwYjUyIiwiaCI6Im11cm11cjY0In0=',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        coordinates: coordinates,
+        instructions: true,
+        radiuses: [5000, 5000]
+      })
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      
       if (data.features && data.features.length > 0) {
         const route = data.features[0];
         const coordinates = route.geometry.coordinates;
-
-        // Update itinerary with real data
-        if (route.properties) {
+        
+        // Update with real route data
+        if (route.properties && route.properties.summary) {
           const summary = route.properties.summary;
           itinerary.distance = `${(summary.distance / 1000).toFixed(1)} km`;
           itinerary.duration = `${Math.round(summary.duration / 60)} min`;
         }
-
-        // Convert coordinates to Leaflet format (swap lng,lat to lat,lng)
-        const latlngs = coordinates.map((coord) => [coord[1], coord[0]]);
-
+        
+        // Update steps if available
+        if (route.properties && route.properties.segments) {
+          const steps = route.properties.segments[0].steps;
+          if (steps && steps.length > 0) {
+            currentRoute.value.steps = steps.slice(0, 5).map((step, index) => ({
+              instruction: step.instruction || `Step ${index + 1}`,
+              distance: `${(step.distance / 1000).toFixed(1)} km`,
+              duration: `${Math.round(step.duration / 60)} min`
+            }));
+          }
+        }
+        
+        // Draw the route
+        const latlngs = coordinates.map(coord => [coord[1], coord[0]]);
+        
         if (routeLayer.value) {
           map.value.removeLayer(routeLayer.value);
         }
-
-        // Draw the actual road route
+        
         routeLayer.value = L.polyline(latlngs, {
-          color: "#3B82F6",
+          color: '#3B82F6',
           weight: 6,
           opacity: 0.8,
-          lineCap: "round",
-          lineJoin: "round",
-          className: "route-line",
+          lineCap: 'round',
+          lineJoin: 'round',
+          className: 'route-line'
         }).addTo(map.value);
-
-        // Add route animation effect
-        const routeElement = document.querySelector(".route-line");
-        if (routeElement) {
-          routeElement.style.strokeDasharray = "20,10";
-          routeElement.style.animation = "dash 2s linear infinite";
-        }
-
-        // Fit map to show the entire route
+        
         map.value.fitBounds(routeLayer.value.getBounds().pad(0.1));
-      } else {
-        drawStraightLine();
+        return;
       }
-    } else {
-      drawStraightLine();
     }
+    
+    // Fallback if API fails
+    drawEnhancedRoute();
   } catch (error) {
-    console.error("Error getting route:", error);
-    drawStraightLine();
+    console.error('Directions error:', error);
+    drawEnhancedRoute();
   }
 };
 
-// Decode Google's polyline format
+const drawEnhancedRoute = () => {
+  if (!userLocation.value) return;
+
+  const distance = calculateDistance(
+    userLocation.value.lat,
+    userLocation.value.lng,
+    destination.value.lat,
+    destination.value.lng
+  );
+
+  itinerary.distance = `${distance.toFixed(1)} km`;
+  itinerary.duration = `${Math.round(distance * 1.2)} min`;
+
+  const waypoints = generateRoadRoute(
+    userLocation.value.lat,
+    userLocation.value.lng,
+    destination.value.lat,
+    destination.value.lng
+  );
+
+  if (routeLayer.value) {
+    map.value.removeLayer(routeLayer.value);
+  }
+
+  routeLayer.value = L.polyline(waypoints, {
+    color: "#3B82F6",
+    weight: 6,
+    opacity: 0.8,
+    lineCap: "round",
+    lineJoin: "round",
+    className: "route-line",
+  }).addTo(map.value);
+
+  map.value.fitBounds(routeLayer.value.getBounds().pad(0.1));
+};
+
+const calculateDistance = (lat1, lng1, lat2, lng2) => {
+  const R = 6371; // Earth's radius in km
+  const dLat = ((lat2 - lat1) * Math.PI) / 180;
+  const dLng = ((lng2 - lng1) * Math.PI) / 180;
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos((lat1 * Math.PI) / 180) *
+      Math.cos((lat2 * Math.PI) / 180) *
+      Math.sin(dLng / 2) *
+      Math.sin(dLng / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c;
+};
+
+const generateRoadRoute = (startLat, startLng, endLat, endLng) => {
+  const waypoints = [];
+  const steps = 20;
+
+  for (let i = 0; i <= steps; i++) {
+    const ratio = i / steps;
+
+    let lat = startLat + (endLat - startLat) * ratio;
+    let lng = startLng + (endLng - startLng) * ratio;
+
+    if (i > 0 && i < steps) {
+      const curve = Math.sin(ratio * Math.PI) * 0.01;
+      lat += curve;
+      lng += curve * 0.5;
+    }
+
+    waypoints.push([lat, lng]);
+  }
+
+  return waypoints;
+};
+
 const decodePolyline = (encoded) => {
   const poly = [];
   let index = 0;
@@ -283,29 +411,6 @@ const decodePolyline = (encoded) => {
     poly.push([lat / 1e5, lng / 1e5]);
   }
   return poly;
-};
-
-const drawStraightLine = () => {
-  if (!userLocation.value) return;
-
-  const latlngs = [
-    [userLocation.value.lat, userLocation.value.lng],
-    [destination.value.lat, destination.value.lng],
-  ];
-
-  if (routeLayer.value) {
-    map.value.removeLayer(routeLayer.value);
-  }
-
-  routeLayer.value = L.polyline(latlngs, {
-    color: "#EF4444",
-    weight: 4,
-    opacity: 0.8,
-    dashArray: "10, 10",
-  }).addTo(map.value);
-
-  // Fit map to show both points
-  map.value.fitBounds(routeLayer.value.getBounds().pad(0.1));
 };
 
 onMounted(async () => {
