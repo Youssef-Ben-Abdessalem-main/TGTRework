@@ -34,11 +34,12 @@ const partners = [
 const duplicatedPartners = [
   ...partners.map((p, i) => ({ ...p, key: `set1-${i}` })),
   ...partners.map((p, i) => ({ ...p, key: `set2-${i}` })),
+  ...partners.map((p, i) => ({ ...p, key: `set3-${i}` })),
 ];
 </script>
 <template>
   <section
-    class="w-full bg-ocean-deep border-b border-white/10 to-primary py-6 px-4 overflow-hidden relative"
+    class="w-full bg-ocean-deep border-b border-white/10 to-primary py-2 px-4 overflow-hidden relative"
   >
     <div class="relative">
       <div class="relative">
@@ -49,7 +50,7 @@ const duplicatedPartners = [
             class="flex items-center justify-center min-w-max px-8 group"
           >
             <div
-              class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 transition-all duration-300 hover:bg-white/10 hover:border-white/20 hover:scale-105 hover:shadow-xl hover:shadow-blue-500/20"
+              class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-md p-2 transition-all duration-300 hover:bg-white/10 hover:border-white/20 hover:scale-105 hover:shadow-xl hover:shadow-blue-500/20"
             >
               <img
                 :src="partner.logo"
