@@ -1,6 +1,8 @@
 import ArticleDetails from "@/widget/articles/ArticleDetails.vue";
 import ArticleList from "@/widget/articles/ArticleList.vue";
 import EventDetails from "@/widget/Event/EventDetails.vue";
+import HotelDetails from "@/widget/Hotels/HotelDetails.vue";
+import ItineraryDetails from "@/widget/itinerary/ItineraryDetails.vue";
 import CircuitCompose from "@/widget/Tour/CircuitCompose.vue";
 import Events from "@/widget/Views/Events.vue";
 import Home from "@/widget/Views/Home.vue";
@@ -59,12 +61,19 @@ const router = createRouter({
     {
       path: "/itinerary/:from/:to",
       name: "ItineraryDetails",
-      component: () => import("@/widget/Itinerary/ItineraryDetails.vue"),
+      component: ItineraryDetails,
       props: true,
     },
 
-    // Hotels, restaurants, transport
+    // Hotels
     { path: "/hotels", name: "Hotels", component: Hotels },
+    {
+      path: "/hotels/details/:slug",
+      name: "HotelsDetails",
+      component: HotelDetails,
+    },
+
+    //, restaurants, transport
     { path: "/restaurants", name: "Restaurants", component: Restaurants },
     { path: "/transport", name: "Transport", component: Transport },
   ],

@@ -4,14 +4,8 @@ import Separator from "@/components/ui/separator/Separator.vue";
 import { Star, MapPin, Calendar, Users } from "lucide-vue-next";
 import { onMounted, onUnmounted, ref, computed } from "vue";
 import Badge from "@/components/ui/badge/Badge.vue";
-
-const stats = [
-  { value: "250+", label: "Luxury Hotels" },
-  { value: "85k+", label: "Happy Guests" },
-  { value: "120+", label: "Destinations" },
-];
-
-// Fallback data in case bestHotels is empty or undefined
+import { useRouter } from "vue-router";
+const router = useRouter();
 const fallbackHotels = [
   {
     name: "Four Seasons Tunis",
@@ -25,6 +19,11 @@ const fallbackHotels = [
     image: "https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800&q=80",
   },
 ];
+function handleDetailsClick(tab) {
+  console.log(tab);
+
+  router.push(`/hotels/details/${tab.name}`);
+}
 
 const hotels = bestHotels?.length > 0 ? bestHotels : fallbackHotels;
 const currentHotel = ref(hotels[0]);
@@ -142,7 +141,7 @@ onUnmounted(() => {
                 </div>
               </div>
             </div>
-
+            <!-- 
             <div class="mb-2">
               <div
                 class="bg-gradient-to-r from-ocean-deep/5 via-ocean-light/10 to-cyan-100/20 rounded-2xl p-6 border border-ocean-light/20"
@@ -182,7 +181,7 @@ onUnmounted(() => {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
 
@@ -190,18 +189,6 @@ onUnmounted(() => {
           <div
             class="absolute top-8 right-8 lg:right-auto lg:left-8 bg-white rounded-2xl p-4 shadow-lg flex items-center gap-3 z-20"
           >
-            <button
-              class="bg-gradient-to-r from-ocean-deep to-ocean-light text-white p-2 rounded-full hover:scale-110 transition-transform"
-            >
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M9 5l7 7-7 7"
-                />
-              </svg>
-            </button>
             <div class="flex-1">
               <div class="font-semibold text-gray-900">{{ currentHotel.name }}</div>
               <div class="text-sm text-gray-600 flex items-center gap-1">
@@ -219,6 +206,20 @@ onUnmounted(() => {
                 <span class="text-xs text-gray-500">{{ currentHotel.period }}</span>
               </div>
             </div>
+
+            <button
+              @click="handleDetailsClick(currentHotel)"
+              class="bg-gradient-to-r from-ocean-deep to-ocean-light text-white p-2 rounded-full hover:scale-110 transition-transform"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </button>
           </div>
 
           <div class="relative h-full">
