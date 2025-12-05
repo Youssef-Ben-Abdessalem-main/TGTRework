@@ -3,11 +3,15 @@ import Breadcrumbs from "@/shared/Breadcrumbs.vue";
 import ArticleContent from "@/widget/articles/components/ArticleContent.vue";
 import { Home, FileText } from "lucide-vue-next";
 
+const props = defineProps({
+  slug: String,
+});
+
 const breadcrumbs = [
   { label: "Home", icon: Home, href: "/" },
   { label: "Articles", href: "/blogs" },
-  { label: "Travel Tips" },
-  { label: "Organizing a Seminar in Tunisia" },
+  { label: "Article Details" },
+  { label: props.slug.replaceAll("-", " ") },
 ];
 
 const articleContent = [

@@ -39,7 +39,6 @@ const features = [
   <section id="about" class="py-20 md:py-28">
     <div class="container mx-auto px-4">
       <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-        <!-- Left side - Image collage -->
         <div class="relative">
           <div class="grid grid-cols-2 gap-4">
             <div class="space-y-4">
@@ -76,26 +75,24 @@ const features = [
             </div>
           </div>
 
-          <!-- Stats card -->
           <div
             class="absolute -bottom-6 left-1/2 -translate-x-1/2 bg-white rounded-2xl shadow-xl p-6 border border-border"
           >
             <div class="flex gap-8">
               <div class="text-center">
-                <div class="font-serif text-3xl text-secondary">15+</div>
+                <div class="font-serif text-3xl text-sand-mid">15+</div>
                 <div class="text-sm text-gray-700">Years Experience</div>
               </div>
               <div class="text-center border-l border-border pl-8">
-                <div class="font-serif text-3xl text-secondary">50K+</div>
+                <div class="font-serif text-3xl text-sand-mid">50K+</div>
                 <div class="text-sm text-gray-700">Happy Travelers</div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Right side - Content -->
         <div>
-          <p class="text-secondary font-medium uppercase tracking-wider mb-2">
+          <p class="text-sand-mid font-medium uppercase tracking-wider mb-2">
             Why Choose Us
           </p>
           <h2 class="font-serif text-3xl md:text-5xl text-foreground mb-6 text-balance">
@@ -107,16 +104,15 @@ const features = [
             trip is authentic, safe, and tailored to your dreams.
           </p>
 
-          <!-- Features grid -->
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div v-for="feature in features" :key="feature.title" class="flex gap-4">
               <div
                 class="flex-shrink-0 w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center"
               >
-                <component :is="feature.icon" class="h-6 w-6 text-secondary" />
+                <component :is="feature.icon" class="h-6 w-6 text-sand-mid" />
               </div>
               <div>
-                <h3 class="font-medium text-secondary mb-1">{{ feature.title }}</h3>
+                <h3 class="font-medium text-sand-mid mb-1">{{ feature.title }}</h3>
                 <p class="text-sm text-muted-foreground">{{ feature.description }}</p>
               </div>
             </div>

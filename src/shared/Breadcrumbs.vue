@@ -1,7 +1,36 @@
+<script setup>
+import { RouterLink } from "vue-router";
+import { Home, ChevronRight, MapPin } from "lucide-vue-next";
+
+const props = defineProps({
+  title: String,
+  subtitle: String,
+  image: String,
+  badge: [String, Object],
+  breadcrumbs: {
+    type: Array,
+    default: () => [],
+  },
+});
+</script>
+
+<style scoped>
+@keyframes scaleIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+</style>
+
 <template>
   <section class="relative h-[550px] overflow-hidden w-full">
     <div class="absolute inset-0">
-      <!-- animate-[scaleIn_20s_ease-out_infinite_alternate]-->
       <img :src="image" :alt="title" class="w-full h-full object-cover scale-110" />
     </div>
 
@@ -91,39 +120,9 @@
       preserveAspectRatio="none"
     >
       <path
-        fill="hsl(210 30% 98%)"
+        fill="white"
         d="M0,64C120,96,240,112,360,106.7C480,101,600,75,720,69.3C840,64,960,80,1080,85.3C1200,91,1320,85,1380,82.7L1440,80L1440,120L0,120Z"
       />
     </svg>
   </section>
 </template>
-
-<script setup>
-import { RouterLink } from "vue-router";
-import { Home, ChevronRight, MapPin } from "lucide-vue-next";
-
-const props = defineProps({
-  title: String,
-  subtitle: String,
-  image: String,
-  badge: [String, Object],
-  breadcrumbs: {
-    type: Array,
-    default: () => [],
-  },
-});
-</script>
-
-<style scoped>
-@keyframes scaleIn {
-  0% {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-</style>

@@ -54,7 +54,7 @@ const services = [
 </script>
 
 <template>
-  <div class="relative px-4 py-16 overflow-hidde h-auto">
+  <div class="relative px-4 py-16 overflow-hidden h-auto lg:h-[55vw]">
     <div class="text-start relative max-w-7xl mx-auto mb-20">
       <h2
         class="text-3xl font-extrabold bg-gradient-to-r from-ocean-deep via-ocean-light to-cyan-500 bg-clip-text text-transparent absolute left-10 -bottom-1"
@@ -74,17 +74,17 @@ const services = [
         </div>
       </div>
     </div>
-    <div class="relative">
+    <div class="relative grid md:grid-cols-2 grid-cols-1 gap-8">
       <RouterLink
         v-for="(service, index) in services"
         :key="service.title"
         :to="service.link"
         :class="[
-          'group absolute bg-white rounded-2xl p-6 border border-gray-200 shadow hover:shadow-xl hover:bg-ocean-deep transition-all duration-500 transform hover:scale-105 hover:rotate-1',
-          index === 0 ? 'top-[0%] left-[5%] w-72 h-72' : '',
-          index === 1 ? 'top-[20%] left-[30%] w-72 h-72' : '',
-          index === 2 ? 'top-[40%] left-[55%] w-72 h-72' : '',
-          index === 3 ? 'top-[60%] left-[78%] w-72 h-72' : '',
+          'group flex lg:absolute bg-white rounded-2xl p-6 border border-gray-200 shadow hover:shadow-xl hover:bg-ocean-deep transition-all duration-500 transform hover:scale-105 hover:rotate-1',
+          index === 0 ? 'top-[0%] left-[5%] w-full lg:w-72 h-72' : '',
+          index === 1 ? 'top-[20%] left-[30%] w-full lg:w-72 h-72' : '',
+          index === 2 ? 'top-[40%] left-[55%] w-full lg:w-72 h-72' : '',
+          index === 3 ? 'top-[60%] left-[78%] w-full lg:w-72 h-72' : '',
         ]"
         :style="{
           animationDelay: `${index * 200}ms`,

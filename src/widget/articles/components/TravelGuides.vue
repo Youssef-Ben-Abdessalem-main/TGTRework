@@ -15,7 +15,6 @@ const guides = [
     avatar:
       "https://secure.gravatar.com/avatar/45f396be357ec7ea96cd83f636aadf2399ea64cb3fd2a0fc370b76079e9da706?s=44&d=mm&r=g",
     readTime: 4,
-    link: "/blog/details",
   },
   {
     id: 2,
@@ -29,7 +28,6 @@ const guides = [
     avatar:
       "https://secure.gravatar.com/avatar/45f396be357ec7ea96cd83f636aadf2399ea64cb3fd2a0fc370b76079e9da706?s=44&d=mm&r=g",
     readTime: 5,
-    link: "/blog/details",
   },
   {
     id: 3,
@@ -42,7 +40,6 @@ const guides = [
     avatar:
       "https://secure.gravatar.com/avatar/45f396be357ec7ea96cd83f636aadf2399ea64cb3fd2a0fc370b76079e9da706?s=44&d=mm&r=g",
     readTime: 4,
-    link: "/blog/details",
   },
   {
     id: 4,
@@ -56,7 +53,6 @@ const guides = [
     avatar:
       "https://secure.gravatar.com/avatar/45f396be357ec7ea96cd83f636aadf2399ea64cb3fd2a0fc370b76079e9da706?s=44&d=mm&r=g",
     readTime: 8,
-    link: "/blog/details",
   },
 
   {
@@ -71,7 +67,6 @@ const guides = [
     avatar:
       "https://secure.gravatar.com/avatar/45f396be357ec7ea96cd83f636aadf2399ea64cb3fd2a0fc370b76079e9da706?s=44&d=mm&r=g",
     readTime: 6,
-    link: "/blog/details",
   },
   {
     id: 6,
@@ -85,7 +80,6 @@ const guides = [
     avatar:
       "https://secure.gravatar.com/avatar/45f396be357ec7ea96cd83f636aadf2399ea64cb3fd2a0fc370b76079e9da706?s=44&d=mm&r=g",
     readTime: 7,
-    link: "/blog/details",
   },
   {
     id: 7,
@@ -99,7 +93,6 @@ const guides = [
     avatar:
       "https://secure.gravatar.com/avatar/45f396be357ec7ea96cd83f636aadf2399ea64cb3fd2a0fc370b76079e9da706?s=44&d=mm&r=g",
     readTime: 5,
-    link: "/blog/details",
   },
   {
     id: 8,
@@ -113,7 +106,6 @@ const guides = [
     avatar:
       "https://secure.gravatar.com/avatar/45f396be357ec7ea96cd83f636aadf2399ea64cb3fd2a0fc370b76079e9da706?s=44&d=mm&r=g",
     readTime: 6,
-    link: "/blog/details",
   },
   {
     id: 9,
@@ -127,7 +119,6 @@ const guides = [
     avatar:
       "https://secure.gravatar.com/avatar/45f396be357ec7ea96cd83f636aadf2399ea64cb3fd2a0fc370b76079e9da706?s=44&d=mm&r=g",
     readTime: 5,
-    link: "/blog/details",
   },
 ];
 
@@ -254,7 +245,7 @@ onUnmounted(() => {
                 <h3
                   class="text-xl line-clamp-2 font-bold text-gray-900 group-hover:text-ocean-deep transition-colors duration-300"
                 >
-                  <a :href="guide.link" class="hover:underline">
+                  <a :href="'/blog/' + guide.title" class="hover:underline">
                     {{ guide.title }}
                   </a>
                 </h3>
