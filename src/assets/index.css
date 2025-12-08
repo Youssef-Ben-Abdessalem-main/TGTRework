@@ -115,17 +115,30 @@
   --secondary: 240 162 2;
   --thirdly: 217 93 57;
   --muted: 244 244 245;
+
   /**Primary**/
   --ocean-deep: 0 64 128;
   --ocean-mid: 10 102 184;
   --ocean-light: 41 178 204;
+
   /**Secondary**/
   --orange-deep: 158 57 0;
   --orange-mid: 232 105 44;
   --orange-light: 255 142 88;
 
+  /** Gold **/
+  --gold: 209 158 71;
+  --gold-light: 228 195 128;
+  --gold-dark: 158 111 45;
+
+  /** Navy **/
+  --navy: 22 38 68;
+  --navy-light: 38 55 89;
+  --navy-dark: 11 20 39;
+
   --half-primary: rgba(14, 20, 40, 0.5);
   --half-secondary: #f6ede0;
+
   --gradient-ocean: linear-gradient(
     135deg,
     hsl(210 100% 25%) 0%,

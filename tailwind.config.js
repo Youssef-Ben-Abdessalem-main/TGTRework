@@ -28,6 +28,19 @@ export default {
           mid: "rgb(var(--orange-mid) / <alpha-value>)",
           light: "rgb(var(--orange-light) / <alpha-value>)",
         },
+
+        gold: {
+          DEFAULT: "rgb(var(--gold) / <alpha-value>)",
+          light: "rgb(var(--gold-light) / <alpha-value>)",
+          dark: "rgb(var(--gold-dark) / <alpha-value>)",
+        },
+
+        navy: {
+          DEFAULT: "rgb(var(--navy) / <alpha-value>)",
+          light: "rgb(var(--navy-light) / <alpha-value>)",
+          dark: "rgb(var(--navy-dark) / <alpha-value>)",
+        },
+
         "half-primary": "rgba(14, 20, 40, 0.5)",
         "half-secondary": "#f6ede0",
       },

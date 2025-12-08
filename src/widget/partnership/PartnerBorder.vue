@@ -39,7 +39,7 @@ const duplicatedPartners = [
 </script>
 <template>
   <section
-    class="w-full bg-ocean-deep border-b border-white/10 to-primary py-2 px-4 overflow-hidden relative"
+    class="mt-10 w-full bg-ocean-deep border-b border-white/10 to-primary py-2 px-4 overflow-hidden relative"
   >
     <div class="relative">
       <div class="relative">

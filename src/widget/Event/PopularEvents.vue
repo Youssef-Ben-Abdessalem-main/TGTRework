@@ -1,5 +1,6 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from "vue";
+import EventCard from "./Components/EventCard.vue";
 
 const popularEvents = [
   {
@@ -144,16 +145,9 @@ onUnmounted(() => {
       </svg>
     </div>
 
-    <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-none rotate-180">
-      <svg
-        class="relative block w-full h-16"
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 1000 100"
-        preserveAspectRatio="none"
-      >
-        <polygon class="fill-white" points="0,0 1000,100 1000,0" />
-      </svg>
-    </div>
+    <div
+      class="h-32 bg-gradient-to-t from-white to-transparent absolute bottom-0 left-0 w-full z-[1000]"
+    ></div>
 
     <div class="relative mx-auto px-6">
       <div class="text-center mb-16">
@@ -171,88 +165,19 @@ onUnmounted(() => {
           :style="{ transform: `translateX(-${currentSlide * 100}%)` }"
         >
           <div
-            v-for="event in popularEvents"
+            v-for="(event, index) in popularEvents"
             :key="event.id"
             class="flex-shrink-0 px-4"
-            :style="{ width: `${slideWidth}%` }"
+            :style="{ width: slideWidth + '%' }"
           >
-            <a
-              :href="event.link"
-              :aria-label="`Event ${event.title}`"
-              class="group rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-lg hover:border-gray-200 transition-all duration-300 bg-white h-80 flex flex-col"
-            >
-              <div class="relative overflow-hidden">
-                <img
-                  :src="event.image"
-                  :alt="event.title"
-                  class="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-              </div>
-
-              <span
-                class="inline-flex items-center justify-center px-2.5 py-1 text-xs font-medium"
-                :class="
-                  event.status === 'Past'
-                    ? 'bg-red-100 text-red-800'
-                    : 'bg-green-100 text-green-800'
-                "
-              >
-                {{ event.status }}
-              </span>
-
-              <div class="p-4 flex flex-col relative">
-                <h3
-                  class="w-[80%] text-lg font-semibold text-ocean-deep mb-2 line-clamp-2 group-hover:text-ocean-deep transition-colors flex-1"
-                >
-                  {{ event.title }}
-                </h3>
-                <div class="space-y-2 mt-auto">
-                  <div class="flex items-center text-sm text-gray-600">
-                    <svg
-                      class="w-4 h-4 mr-2 text-gray-400 flex-shrink-0"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                      ></path>
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                      ></path>
-                    </svg>
-                    <span class="truncate w-[50%]">{{ event.location }}</span>
-                  </div>
-                  <div class="absolute top-3 right-2">
-                    <div
-                      class="bg-gradient-to-br from-ocean-deep to-ocean-mid w-20 justify-center flex flex-col items-center rounded-lg p-2 mr-3 shadow-sm"
-                    >
-                      <div
-                        class="text-white text-xs font-bold items-center gap-1 flex justify-start text-center leading-none"
-                      >
-                        <div class="text-lg font-black">
-                          {{ event.date.split(" ")[0] }}
-                        </div>
-                        <div class="text-xl">
-                          {{ getShortMonth(event.date.split(" ")[1]) }}
-                        </div>
-                      </div>
-                      <div>
-                        <span class="text-sm text-white/50 font-medium">{{
-                          event.date.split(" ")[2]
-                        }}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </a>
+            <EventCard
+              :title="event.title"
+              :location="event.location"
+              :date="event.date"
+              :image="event.image"
+              :status="event.status.toLowerCase()"
+              :index="index"
+            />
           </div>
         </div>
       </div>
@@ -269,12 +194,3 @@ onUnmounted(() => {
     </div>
   </section>
 </template>
-
-<style scoped>
-.line-clamp-2 {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-</style>

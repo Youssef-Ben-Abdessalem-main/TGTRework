@@ -116,12 +116,12 @@ export const getMultipleRoutes = async (userLocation, destination) => {
       ...fastestResult,
     });
 
-    const scenicCoords = generateScenicRoute(
-      userLocation.lat,
-      userLocation.lng,
-      destination.lat,
-      destination.lng
-    );
+    // const scenicCoords = generateScenicRoute(
+    //   userLocation.lat,
+    //   userLocation.lng,
+    //   destination.lat,
+    //   destination.lng
+    // );
 
     // routes.push({
     //   id: 2,

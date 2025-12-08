@@ -108,7 +108,7 @@ window.addEventListener("currencyChanged", (e) => {
 </script>
 
 <template>
-  <nav :class="['absolute z-50 w-full mt-9', isScrolled ? '' : '']">
+  <nav :class="['absolute z-50 w-full', isScrolled ? '' : '']">
     <div class="mx-auto px-4">
       <div class="flex items-center justify-between h-16 lg:h-20">
         <RouterLink to="/">
@@ -306,22 +306,26 @@ window.addEventListener("currencyChanged", (e) => {
                 </div>
                 <div class="p-2">
                   <DropdownMenuItem class="p-0">
-                    <Button
-                      class="w-full justify-start gap-2 hover:bg-secondary !px-1"
-                      variant="ghost"
-                    >
-                      <LogIn class="h-4 w-4" />
-                      Sign In
-                    </Button>
+                    <RouterLink to="/auth/login" class="w-full">
+                      <Button
+                        class="w-full justify-start gap-2 hover:bg-secondary !px-1"
+                        variant="ghost"
+                      >
+                        <LogIn class="h-4 w-4" />
+                        Sign In
+                      </Button>
+                    </RouterLink>
                   </DropdownMenuItem>
                   <DropdownMenuItem class="p-0">
-                    <Button
-                      class="w-full justify-start gap-2 hover:bg-secondary !px-1"
-                      variant="ghost"
-                    >
-                      <UserPlus class="h-4 w-4" />
-                      Create Account
-                    </Button>
+                    <RouterLink to="/auth/signup" class="w-full">
+                      <Button
+                        class="w-full justify-start gap-2 hover:bg-secondary !px-1"
+                        variant="ghost"
+                      >
+                        <UserPlus class="h-4 w-4" />
+                        Create Account
+                      </Button>
+                    </RouterLink>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem class="!px-1">

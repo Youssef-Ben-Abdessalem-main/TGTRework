@@ -6,6 +6,7 @@ import HotelFeatures from "@/widget/Hotels/Components/HotelFeatures.vue";
 import HotelBooking from "@/widget/Hotels/Components/HotelBooking.vue";
 import HotelAmenities from "@/widget/Hotels/Components/HotelAmenities.vue";
 import HotelOverview from "@/widget/Hotels/Components/HotelOverview.vue";
+import HotelComments from "@/widget/Hotels/Components/HotelComments.vue";
 import { Home } from "lucide-vue-next";
 import { useRoute } from "vue-router";
 
@@ -49,6 +50,10 @@ const breadcrumbs = [
 
       <div class="w-full">
         <HotelOverview />
+      </div>
+
+      <div class="w-full">
+        <HotelComments />
       </div>
     </div>
   </div>

@@ -7,6 +7,7 @@ import WhyChooseUs from "../Home/WhyChooseUs.vue";
 import BestHotel from "@/widget/Hotels/BestHotel.vue";
 import OurService from "@/widget/about-us/OurService.vue";
 import PopularEvents from "../Event/PopularEvents.vue";
+import PopularMusses from "@/widget/musses/PopularMusses.vue";
 </script>
 
 <template>
@@ -21,4 +22,5 @@ import PopularEvents from "../Event/PopularEvents.vue";
     <WhyChooseUs />
   </div>
   <PopularEvents />
+  <PopularMusses />
 </template>
