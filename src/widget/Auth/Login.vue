@@ -1,17 +1,32 @@
 <script setup>
 import { ref } from "vue";
-import { Eye, EyeOff, Mail, Lock, Sparkles } from "lucide-vue-next";
+import { Eye, EyeOff, Mail, Lock } from "lucide-vue-next";
+import { authservice } from "@/services/auth.js";
+import { useRouter } from "vue-router";
+import { toast } from "vue-sonner";
 
+const router = useRouter();
 const showPassword = ref(false);
 const formData = ref({
   email: "",
   password: "",
 });
 
-const emit = defineEmits(["submit"]);
+const handleSubmit = async () => {
+  const { email, password } = formData.value;
+  if (!email || !password) {
+    toast.error("Please fill in all required fields.");
+    return;
+  }
 
-const handleSubmit = () => {
-  emit("submit", formData.value);
+  try {
+    const response = await authservice.Login(email, password);
+    localStorage.setItem("auth_token", response.token);
+    localStorage.setItem("user", JSON.stringify(response.user));
+    router.push("/");
+  } catch (error) {
+    toast.error("Login failed. Please check your credentials.");
+  }
 };
 </script>
 

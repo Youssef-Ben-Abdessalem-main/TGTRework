@@ -54,6 +54,8 @@ import {
 import { onMounted, ref } from "vue";
 
 const searchOpen = ref(false);
+const isLoggedIn = ref(false);
+const user = ref(null);
 const searchQuery = ref("");
 
 const isScrolled = ref(false);
@@ -62,10 +64,18 @@ const selectedCurrency = ref(
 );
 
 onMounted(() => {
+  isLoggedIn.value = !!localStorage.getItem("auth_token");
+  user.value = JSON.parse(localStorage.getItem("user"));
+
   window.addEventListener("currencyChanged", (e) => {
     selectedCurrency.value = e.detail;
   });
 });
+
+function logout() {
+  isLoggedIn.value = false;
+  user.value = localStorage.setItem(null);
+}
 
 const getServiceIcon = (type) => {
   switch (type) {
@@ -245,53 +255,56 @@ window.addEventListener("currencyChanged", (e) => {
                       <User class="h-5 w-5 text-primary" />
                     </div>
                     <div>
-                      <p class="font-medium">Ahmed Ben Ali</p>
-                      <p class="text-xs text-muted-foreground">Gold Member</p>
+                      <p class="font-medium">{{ user.name }}</p>
+                      <p class="text-xs text-muted-foreground">{{ user.email }}</p>
                     </div>
                   </div>
-                  <div class="flex items-center gap-2 mt-3 p-2 rounded-lg bg-primary/10">
+                  <!-- <div class="flex items-center gap-2 mt-3 p-2 rounded-lg bg-primary/10">
                     <Award class="h-4 w-4 text-primary" />
                     <span class="text-xs text-primary font-medium"
                       >2,450 Points Available</span
                     >
-                  </div>
+                  </div> -->
                 </div>
                 <div class="p-2">
                   <DropdownMenuGroup>
-                    <DropdownMenuItem>
+                    <DropdownMenuItem class="hover:bg-secondary rounded-md">
                       <Ticket class="h-4 w-4 mr-2" />
                       My Bookings
                     </DropdownMenuItem>
-                    <DropdownMenuItem>
+                    <DropdownMenuItem class="hover:bg-secondary rounded-md">
                       <Heart class="h-4 w-4 mr-2" />
                       Saved Places
                     </DropdownMenuItem>
-                    <DropdownMenuItem>
+                    <DropdownMenuItem class="hover:bg-secondary rounded-md">
                       <History class="h-4 w-4 mr-2" />
                       Booking History
                     </DropdownMenuItem>
-                    <DropdownMenuItem>
+                    <DropdownMenuItem class="hover:bg-secondary rounded-md">
                       <Wallet class="h-4 w-4 mr-2" />
                       Payment Methods
                     </DropdownMenuItem>
                   </DropdownMenuGroup>
                   <DropdownMenuSeparator />
                   <DropdownMenuGroup>
-                    <DropdownMenuItem>
+                    <DropdownMenuItem class="hover:bg-secondary rounded-md">
                       <Gift class="h-4 w-4 mr-2" />
                       Rewards & Points
                     </DropdownMenuItem>
-                    <DropdownMenuItem>
+                    <DropdownMenuItem class="hover:bg-secondary rounded-md">
                       <Settings class="h-4 w-4 mr-2" />
                       Account Settings
                     </DropdownMenuItem>
-                    <DropdownMenuItem>
+                    <DropdownMenuItem class="hover:bg-secondary rounded-md">
                       <HelpCircle class="h-4 w-4 mr-2" />
                       Help & Support
                     </DropdownMenuItem>
                   </DropdownMenuGroup>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem class="text-destructive">
+                  <DropdownMenuItem
+                    class="hover:bg-red-500 hover:text-white rounded-md"
+                    @click="logout()"
+                  >
                     <LogOut class="h-4 w-4 mr-2" />
                     Sign Out
                   </DropdownMenuItem>

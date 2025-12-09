@@ -2,6 +2,7 @@
 import HotelView from "@/assets/images/HotelView.png";
 import Card from "@/components/ui/card/Card.vue";
 import { MapPin, Star, Shield } from "lucide-vue-next";
+import { Toaster } from "vue-sonner";
 </script>
 <template>
   <div class="min-h-screen w-full relative overflow-hidden">
@@ -104,6 +105,7 @@ import { MapPin, Star, Shield } from "lucide-vue-next";
     <div
       class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-navy-dark to-transparent pointer-events-none"
     />
+    <Toaster position="top-center" class="bg-ocean-deep" />
   </div>
 </template>
 <style scooped></style>

@@ -22,7 +22,6 @@ const carouselConfig = {
 
 <template>
   <section class="py-20 px-4 relative overflow-hidden">
-    <!-- Background Pattern -->
     <div class="absolute inset-0 opacity-30">
       <div
         class="absolute top-0 left-1/4 w-px h-full bg-gradient-to-b from-transparent via-yellow-400/20 to-transparent"

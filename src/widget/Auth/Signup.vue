@@ -1,31 +1,82 @@
 <script setup>
 import { ref } from "vue";
-import { Eye, EyeOff, Mail, Lock, User, Sparkles } from "lucide-vue-next";
+import { Eye, EyeOff, Mail, Lock, User } from "lucide-vue-next";
+import { toast } from "vue-sonner";
+import { authservice } from "@/services/auth.js";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
 const showPassword = ref(false);
 const showConfirmPassword = ref(false);
+const Loading = ref(false);
 const formData = ref({
-  firstName: "",
-  lastName: "",
+  prenom: "",
+  name: "",
   email: "",
-  city: "",
-  phone: "",
+  ville: "",
+  tel: "",
   password: "",
   confirmPassword: "",
-  acceptTerms: false,
+  privacy: false,
 });
 
-const emit = defineEmits(["submit"]);
+const handleSubmit = async () => {
+  const {
+    prenom,
+    name,
+    email,
+    ville,
+    tel,
+    password,
+    confirmPassword,
+    privacy,
+  } = formData.value;
 
-const handleSubmit = () => {
-  emit("submit", formData.value);
+  if (
+    !prenom ||
+    !name ||
+    !email ||
+    !ville ||
+    !tel ||
+    !password ||
+    !confirmPassword ||
+    !privacy
+  ) {
+    toast.error("Please fill in all required fields.");
+    return;
+  }
+
+  if (password !== confirmPassword) {
+    toast.error("Passwords do not match.");
+    return;
+  }
+
+  const data = {
+    prenom,
+    name,
+    email,
+    ville,
+    tel,
+    password,
+    privacy,
+  };
+
+  try {
+    Loading.value = true;
+    await authservice.SignUp(data);
+    Loading.value = false;
+    toast.success("Account created successfully!");
+    router.push("/auth/login");
+  } catch (error) {
+    toast.error("Sign up failed. Please try again.");
+  }
 };
 </script>
 
 <template>
   <div class="w-full max-w-xl">
     <div
-      class="absolute -inset-1 bg-gradient-to-r from-gold/20 via-gold-light/10 to-gold/20 rounded-3xl blur-xl opacity-60"
+      class="absolute -inset-1 bg-gradient-to-r from-gold/20 via-gold-light/10 to-gold/20 rounded-3xl blur-xl opaville-60"
     />
 
     <div class="relative glass rounded-3xl p-8 md:p-10 overflow-hidden">
@@ -57,7 +108,7 @@ const handleSubmit = () => {
           <div class="relative">
             <User class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white" />
             <input
-              v-model="formData.firstName"
+              v-model="formData.prenom"
               type="text"
               placeholder="Enter Your First Name"
               class="w-full pl-12 pr-12 py-3 rounded-xl border border-cream-dark/50 bg-white/20 backdrop-blur-sm text-white placeholder:text-white focus:outline-none focus:ring-2 focus:ring-gold/50 focus:border-gold transition-all"
@@ -67,7 +118,7 @@ const handleSubmit = () => {
           <div class="relative">
             <User class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white" />
             <input
-              v-model="formData.lastName"
+              v-model="formData.name"
               type="text"
               placeholder="Enter Your Name"
               class="w-full pl-12 pr-12 py-3 rounded-xl border border-cream-dark/50 bg-white/20 backdrop-blur-sm text-white placeholder:text-white focus:outline-none focus:ring-2 focus:ring-gold/50 focus:border-gold transition-all"
@@ -106,9 +157,9 @@ const handleSubmit = () => {
               />
             </svg>
             <input
-              v-model="formData.city"
+              v-model="formData.ville"
               type="text"
-              placeholder="Enter Your City"
+              placeholder="Enter Your ville"
               class="w-full pl-12 pr-12 py-3 rounded-xl border border-cream-dark/50 bg-white/20 backdrop-blur-sm text-white placeholder:text-white focus:outline-none focus:ring-2 focus:ring-gold/50 focus:border-gold transition-all"
             />
           </div>
@@ -129,9 +180,9 @@ const handleSubmit = () => {
               />
             </svg>
             <input
-              v-model="formData.phone"
+              v-model="formData.tel"
               type="tel"
-              placeholder="Enter Your Phone"
+              placeholder="Enter Your tel"
               class="w-full pl-12 pr-12 py-3 rounded-xl border border-cream-dark/50 bg-white/20 backdrop-blur-sm text-white placeholder:text-white focus:outline-none focus:ring-2 focus:ring-gold/50 focus:border-gold transition-all"
             />
           </div>
@@ -172,24 +223,49 @@ const handleSubmit = () => {
           </button>
         </div>
 
-        <div class="flex items-start gap-3">
+        <div class="flex items-center gap-3">
           <input
-            v-model="formData.acceptTerms"
+            v-model="formData.privacy"
             type="checkbox"
             id="terms"
-            class="mt-1 w-4 h-4 text-gold bg-cream/20 border-cream-dark/50 rounded focus:ring-gold/50"
+            class="w-4 h-4 rounded-full text-gold bg-cream/20 border-cream-dark/50 focus:ring-gold/50"
           />
           <label for="terms" class="text-sm text-white/70">
-            Acceptez les conditions et la politique de confidentialité
+            Accept the terms and conditions and privacy policy
           </label>
         </div>
 
         <button
           type="submit"
-          :disabled="!formData.acceptTerms"
-          class="w-full py-3 px-6 rounded-xl bg-gradient-to-r from-gold to-gold-light text-navy-dark font-semibold hover:shadow-gold-glow transition-all duration-300 transform hover:scale-[1.02] mt-2 disabled:opacity-50 disabled:cursor-not-allowed"
+          :disabled="!formData.privacy"
+          class="w-full py-3 px-6 rounded-xl bg-gradient-to-r from-gold to-gold-light text-navy-dark font-semibold hover:shadow-gold-glow transition-all duration-300 transform hover:scale-[1.02] mt-2 disabled:opaville-50 disabled:cursor-not-allowed"
         >
-          Sign Up
+          <span v-if="!Loading">Sign Up</span>
+          <svg
+            v-if="Loading"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 300 150"
+            class="w-full h-10"
+          >
+            <path
+              fill="none"
+              stroke="#000000"
+              stroke-width="15"
+              stroke-linecap="round"
+              stroke-dasharray="300 385"
+              stroke-dashoffset="0"
+              d="M275 75c0 31-27 50-50 50-58 0-92-100-150-100-28 0-50 22-50 50s23 50 50 50c58 0 92-100 150-100 24 0 50 19 50 50Z"
+            >
+              <animate
+                attributeName="stroke-dashoffset"
+                calcMode="spline"
+                dur="2"
+                values="685;-685"
+                keySplines="0 0 1 1"
+                repeatCount="indefinite"
+              ></animate>
+            </path>
+          </svg>
         </button>
       </form>
 
