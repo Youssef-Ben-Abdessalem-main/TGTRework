@@ -2,7 +2,7 @@
 import "vue3-carousel/carousel.css";
 import { Carousel, Slide } from "vue3-carousel";
 import SectionHeader from "../../shared/SectionHeader.vue";
-import VideoCard from "./components/VideoCard.vue";
+import VideoCard from "../video/components/VideoCard.vue";
 import { videos } from "@/assets/data/videoData.js";
 
 const carouselConfig = {

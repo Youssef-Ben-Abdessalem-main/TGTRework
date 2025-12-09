@@ -59,6 +59,7 @@ const articles = [
       <div class="text-center mb-12">
         <div class="flex flex-col justify-center items-center">
           <p
+            v-if="props.IsMore"
             class="text-sm uppercase tracking-wider mb-4 bg-ocean-light/20 w-max px-5 py-3 rounded-full text-ocean-mid"
           >
             Latest Articles
@@ -72,7 +73,7 @@ const articles = [
           </p>
         </div>
 
-        <div class="max-w-xl mx-auto relative">
+        <div class="max-w-xl mx-auto relative" v-if="props.IsMore">
           <div class="relative flex items-center gap-4">
             <Search class="absolute left-4 w-5 h-5 text-gray-400" />
             <Input

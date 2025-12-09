@@ -15,6 +15,7 @@ import Login from "@/widget/Auth/Login.vue";
 import Signup from "@/widget/Auth/Signup.vue";
 import { createRouter, createWebHistory } from "vue-router";
 import MussesDetails from "@/widget/musses/MussesDetails.vue";
+import VideoDetails from "@/widget/video/VideoDetails.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -89,6 +90,17 @@ const router = createRouter({
           name: "MussesDetails",
           component: MussesDetails,
           props: true,
+        },
+        {
+          path: "videos/video/details/:slug",
+          name: "VideoDetails",
+          component: VideoDetails,
+          props: true,
+        },
+        {
+          path: "weekend",
+          name: "Weekend",
+          component: Home,
         },
       ],
     },

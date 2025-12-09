@@ -16,14 +16,6 @@ function handleDetailsClick(tab) {
 
 <template>
   <div
-    v-motion
-    :initial="{ opacity: 0, y: 20 }"
-    :enter="{
-      opacity: 1,
-      y: 0,
-      transition: { delay: index * 0.1, duration: 0.5 },
-      once: true,
-    }"
     @click="handleDetailsClick(name)"
     class="mx-5 w-full group relative overflow-hidden rounded-2xl bg-ocean-mid backdrop-blur-sm border border-white/10 hover:border-gold/30 transition-all duration-500 cursor-pointer"
   >

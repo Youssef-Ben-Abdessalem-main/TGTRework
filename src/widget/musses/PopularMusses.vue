@@ -50,10 +50,6 @@ const regions = ["All", "Djerba", "Sahel", "South", "Northwest", "Center"];
 </script>
 <template>
   <section class="py-20 px-4 relative overflow-hidden">
-    <!-- <div
-      class="absolute top-0 left-0 w-1/3 h-full bg-gradient-to-r from-gold/5 to-transparent pointer-events-none"
-    /> -->
-
     <div class="max-w-7xl mx-auto relative">
       <div class="text-start relative max-w-7xl mx-auto mb-20">
         <h2
@@ -80,12 +76,7 @@ const regions = ["All", "Djerba", "Sahel", "South", "Northwest", "Center"];
         </Slide>
       </Carousel>
 
-      <div
-        v-motion
-        :initial="{ opacity: 0, y: 20 }"
-        :enter="{ opacity: 1, y: 0, transition: { duration: 0.6 }, once: true }"
-        class="flex flex-wrap gap-3 mt-8 justify-center"
-      >
+      <div class="flex flex-wrap gap-3 mt-8 justify-center">
         <button
           v-for="(region, i) in regions"
           :key="region"

@@ -19,13 +19,24 @@ import VideoRestaurent from "@/widget/Restaurent/VideoRestaurent.vue";
     <BestHotel />
     <FeaturedDestinations />
   </div>
-  <OurService />
-  <div class="max-w-7xl mx-auto">
+
+  <div class="bg-gradient-to-b from-white via-gray-50 to-white">
+    <OurService />
+  </div>
+
+  <div class="max-w-7xl mx-auto py-20">
     <WhyChooseUs />
   </div>
 
-  <PopularEvents />
-  <PopularMusses />
-  <RestaurantsSection />
+  <div class="bg-gradient-to-b from-blue-900 to-blue-800">
+    <PopularEvents />
+  </div>
+
+  <div>
+    <PopularMusses />
+  </div>
+  <div class="bg-gradient-to-br from-ocean-deep to-ocean-mid">
+    <RestaurantsSection />
+  </div>
   <VideoRestaurent />
 </template>

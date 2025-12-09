@@ -20,8 +20,6 @@ const fallbackHotels = [
   },
 ];
 function handleDetailsClick(tab) {
-
-
   router.push(`/hotels/details/${tab.name}`);
 }
 
