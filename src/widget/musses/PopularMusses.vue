@@ -50,9 +50,9 @@ const regions = ["All", "Djerba", "Sahel", "South", "Northwest", "Center"];
 </script>
 <template>
   <section class="py-20 px-4 relative overflow-hidden">
-    <div
+    <!-- <div
       class="absolute top-0 left-0 w-1/3 h-full bg-gradient-to-r from-gold/5 to-transparent pointer-events-none"
-    />
+    /> -->
 
     <div class="max-w-7xl mx-auto relative">
       <div class="text-start relative max-w-7xl mx-auto mb-20">

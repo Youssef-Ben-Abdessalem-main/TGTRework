@@ -28,9 +28,7 @@ onBeforeUnmount(() => {
     ></div>
     <div class="absolute inset-0 scale-110">
       <img :src="bg" alt="Djerba Island aerial view" class="w-full h-full object-cover" />
-      <div
-        class="absolute inset-0 bg-gradient-to-b from-foreground/30 via-foreground/10 to-background"
-      />
+      <div class="absolute inset-0 bg-black/30" />
     </div>
 
     <div
@@ -40,29 +38,29 @@ onBeforeUnmount(() => {
         class="transition-all duration-1000 delay-300"
         :class="isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'"
       >
-        <div
-          class="flex flex-col items-center justify-center gap-2 text-sand-deep/80 mb-4"
-        >
+        <div class="flex flex-col items-center justify-center gap-2 text-white mb-4">
           <MapPin class="w-4 h-4" />
           <span class="text-sm tracking-[0.3em] font-bold uppercase">Tunisie</span>
         </div>
 
         <h1 class="text-5xl md:text-8xl font-serif text-white mb-6 tracking-tight">
           Découvrez <br />
-          <span class="italic text-sand-mid">Djerba</span>
+          <span class="italic text-ocean-deep">Djerba</span>
         </h1>
 
-        <p
-          class="text-primary-foreground/80 max-w-xl mx-auto text-lg leading-relaxed mb-8"
-        >
+        <p class="text-white/80 max-w-xl mx-auto text-lg leading-relaxed mb-8">
           L'île aux mille et une merveilles. Plages paradisiaques, culture millénaire et
           hospitalité légendaire.
         </p>
 
         <div class="flex flex-col items-center justify-center gap-2">
-          <span class="text-primary-foreground/80 ml-2 text-sm">Plus de 500 avis</span>
+          <span class="text-white/80 ml-2 text-sm">Plus de 500 avis</span>
           <div class="flex flex-row items-center gap-2 justify-center">
-            <Star v-for="i in 5" :key="i" class="w-5 h-5 fill-accent text-accent" />
+            <Star
+              v-for="i in 5"
+              :key="i"
+              class="w-5 h-5 fill-yellow-400 text-yellow-400"
+            />
           </div>
         </div>
       </div>

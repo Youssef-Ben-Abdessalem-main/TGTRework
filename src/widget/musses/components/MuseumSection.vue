@@ -1,6 +1,14 @@
 <script setup>
 import { ref, onMounted } from "vue";
+import { RouterLink } from "vue-router";
 import { Navigation, Users, Camera, ChevronLeft, ChevronRight } from "lucide-vue-next";
+
+const props = defineProps({
+  event: {
+    type: Object,
+    required: true,
+  },
+});
 
 const images = [
   "https://i.etsystatic.com/28740627/r/il/205cf9/5549269636/il_300x300.5549269636_b5i9.jpg",
@@ -67,12 +75,15 @@ const prevImage = () => {
             </div>
           </div>
 
-          <button
+          <RouterLink
+            :to="`/itinerary/${encodeURIComponent('your-location')}/${encodeURIComponent(
+              event.location.toLowerCase().replace(/\s+/g, '-')
+            )}`"
             class="flex items-center gap-2 px-6 py-3 bg-sand-mid text-white rounded-md font-medium hover:bg-primary/90 transition-all group"
           >
-            <Navigation class="w-4 h-4" />
-            <span>Itinerary</span>
-          </button>
+            <Navigation class="w-5 h-5 mr-2" />
+            Itinerary
+          </RouterLink>
         </div>
       </div>
 

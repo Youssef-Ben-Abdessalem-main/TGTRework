@@ -46,6 +46,9 @@ onBeforeUnmount(() => {
         ></path>
       </svg>
     </div>
+    <div
+      class="h-32 bg-gradient-to-t from-white to-transparent absolute bottom-0 left-0 w-full z-[1000] pointer-events-none"
+    ></div>
     <div class="max-w-7xl mx-auto px-6">
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
         <div
@@ -77,7 +80,7 @@ onBeforeUnmount(() => {
 
             <div
               v-if="!isExpanded"
-              class="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-sand-light/10 to-transparent"
+              class="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#fff3ee] to-transparent"
             />
           </div>
 
