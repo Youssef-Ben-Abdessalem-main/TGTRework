@@ -10,38 +10,16 @@ const props = defineProps({
   },
 });
 
-const galleryImages = [
+const galleryImages = ref([
   {
     url: props.event.image,
     alt: props.event.title,
     type: "image",
   },
-  {
-    url: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800",
-    alt: "Concert venue",
-    type: "image",
-  },
-  {
-    url: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=800",
-    alt: "Live performance",
-    type: "video",
-  },
-  {
-    url: "https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=800",
-    alt: "Event atmosphere",
-    type: "image",
-  },
-  {
-    url: "https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?w=800",
-    alt: "Stage setup",
-    type: "image",
-  },
-  {
-    url: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800",
-    alt: "Crowd energy",
-    type: "image",
-  },
-];
+]);
+
+// Add more images if available in the future
+// This can be extended when the API provides additional gallery images
 
 const isLightboxOpen = ref(false);
 const currentImageIndex = ref(0);
@@ -59,14 +37,18 @@ const closeLightbox = () => {
 };
 
 const nextImage = () => {
-  currentImageIndex.value = (currentImageIndex.value + 1) % galleryImages.length;
+  if (galleryImages.value.length > 1) {
+    currentImageIndex.value = (currentImageIndex.value + 1) % galleryImages.value.length;
+  }
 };
 
 const prevImage = () => {
-  currentImageIndex.value =
-    currentImageIndex.value === 0
-      ? galleryImages.length - 1
-      : currentImageIndex.value - 1;
+  if (galleryImages.value.length > 1) {
+    currentImageIndex.value =
+      currentImageIndex.value === 0
+        ? galleryImages.value.length - 1
+        : currentImageIndex.value - 1;
+  }
 };
 
 onMounted(() => {
@@ -83,7 +65,7 @@ onMounted(() => {
         <Image class="w-6 h-6 text-green-600 mr-3" />
         <h2 class="text-2xl font-bold text-gray-900">Event Gallery</h2>
       </div>
-      <span class="text-sm text-gray-500">{{ galleryImages.length }} photos</span>
+      <span class="text-sm text-gray-500">{{ galleryImages.length }} {{ galleryImages.length === 1 ? 'photo' : 'photos' }}</span>
     </div>
 
     <div class="mb-4">
@@ -99,6 +81,7 @@ onMounted(() => {
             'opacity-0 translate-y-4': !isLoaded,
             'opacity-100 translate-y-0': isLoaded,
           }"
+          @error="$event.target.src = 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800'"
         />
 
         <div
@@ -129,18 +112,21 @@ onMounted(() => {
             :src="galleryImages[currentImageIndex].url"
             :alt="galleryImages[currentImageIndex].alt"
             class="max-w-full max-h-full object-contain rounded-lg"
+            @error="$event.target.src = 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800'"
           />
 
           <button
+            v-if="galleryImages.length > 1"
             @click="prevImage"
-            class="absolute left-4 top-1/2 -translate-y-1/2 bg-sand-light/90 text-sand-deep p-2 rounded-full transition-colors"
+            class="absolute left-4 top-1/2 -translate-y-1/2 bg-sand-light/90 text-sand-deep p-2 rounded-full transition-colors hover:bg-sand-light"
           >
             <ChevronLeft class="w-6 h-6" />
           </button>
 
           <button
+            v-if="galleryImages.length > 1"
             @click="nextImage"
-            class="absolute right-4 top-1/2 -translate-y-1/2 bg-sand-light/90 text-sand-deep p-2 rounded-full transition-colors"
+            class="absolute right-4 top-1/2 -translate-y-1/2 bg-sand-light/90 text-sand-deep p-2 rounded-full transition-colors hover:bg-sand-light"
           >
             <ChevronRight class="w-6 h-6" />
           </button>
@@ -156,12 +142,12 @@ onMounted(() => {
             class="absolute bottom-4 left-4 bg-black/50 glass text-white px-4 py-2 rounded-lg"
           >
             <p class="font-medium">{{ galleryImages[currentImageIndex].alt }}</p>
-            <p class="text-sm opacity-75">
+            <p v-if="galleryImages.length > 1" class="text-sm opacity-75">
               {{ currentImageIndex + 1 }} of {{ galleryImages.length }}
             </p>
           </div>
 
-          <TransitionGroup
+          <!-- <TransitionGroup
             name="gallery"
             tag="div"
             class="absolute bottom-4 right-4 flex space-x-2 max-w-lg overflow-x-auto"
@@ -188,7 +174,7 @@ onMounted(() => {
                 <Play class="w-4 h-4 text-white" />
               </div>
             </div>
-          </TransitionGroup>
+          </TransitionGroup> -->
         </div>
       </div>
     </Transition>

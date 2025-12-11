@@ -1,7 +1,11 @@
 <script setup>
 import Card from "@/components/ui/card/Card.vue";
 import Select from "@/components/ui/select/Select.vue";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Plane, Plus, Star } from "lucide-vue-next";
+import { ref, onMounted } from "vue";
+
+const isLoading = ref(true);
 
 const services = [
   {
@@ -51,10 +55,16 @@ const services = [
           <circle cx="32" cy="28" r="2" fill="#2C5BA1" />`,
   },
 ];
+
+onMounted(() => {
+  setTimeout(() => {
+    isLoading.value = false;
+  }, 1000);
+});
 </script>
 
 <template>
-  <div class="relative px-4 py-16 overflow-hidden h-auto lg:h-[55vw]">
+  <div class="relative px-4 overflow-hidden py-10">
     <div class="text-start relative max-w-7xl mx-auto mb-20">
       <h2
         class="text-3xl font-extrabold bg-gradient-to-r from-ocean-deep via-ocean-light to-cyan-500 bg-clip-text text-transparent absolute left-10 -bottom-1"
@@ -63,28 +73,36 @@ const services = [
       </h2>
       <p class="text-7xl text-gray-300 font-extrabold">{{ "Our Services" }}</p>
     </div>
-    <div class="absolute inset-0 opacity-20">
-      <div class="grid grid-cols-12 gap-8 p-8">
+
+    <div
+      class="max-w-7xl mx-auto px-2 relative grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-8 py-24"
+    >
+      <template v-if="isLoading">
         <div
-          class="text-gray-400 text-2xl pointer-events-none"
-          v-for="plus in 1000"
-          :key="plus"
+          v-for="i in 4"
+          :key="i"
+          :class="[
+            'w-full lg:w-72 h-72 flex flex-col p-6',
+            i % 2 === 1 ? '-translate-y-10' : 'translate-y-10',
+          ]"
         >
-          <Plus class="opacity-50" />
+          <Skeleton class="w-16 h-16 mx-auto mb-4 rounded-lg" />
+          <Skeleton class="h-6 w-24 mx-auto mb-3" />
+          <Skeleton class="h-4 w-full mb-2" />
+          <Skeleton class="h-4 w-3/4 mx-auto mb-2" />
+          <Skeleton class="h-4 w-5/6 mx-auto" />
         </div>
-      </div>
-    </div>
-    <div class="relative grid md:grid-cols-2 grid-cols-1 gap-8">
+      </template>
+
       <RouterLink
+        v-else
         v-for="(service, index) in services"
         :key="service.title"
         :to="service.link"
         :class="[
-          'group flex lg:absolute bg-white rounded-2xl p-6 border border-gray-200 shadow hover:shadow-xl hover:bg-ocean-deep transition-all duration-500 transform hover:scale-105 hover:rotate-1',
-          index === 0 ? 'top-[0%] left-[5%] w-full lg:w-72 h-72' : '',
-          index === 1 ? 'top-[20%] left-[30%] w-full lg:w-72 h-72' : '',
-          index === 2 ? 'top-[40%] left-[55%] w-full lg:w-72 h-72' : '',
-          index === 3 ? 'top-[60%] left-[78%] w-full lg:w-72 h-72' : '',
+          'w-full lg:w-72 h-72 group flex bg-white rounded-2xl p-6 border border-gray-200 shadow hover:shadow-xl hover:bg-ocean-deep transition-all duration-500 transform hover:scale-105 hover:rotate-1',
+          index % 2 === 0 ? '-translate-y-10' : '',
+          index % 2 != 0 ? 'translate-y-10' : '',
         ]"
         :style="{
           animationDelay: `${index * 200}ms`,
@@ -113,8 +131,6 @@ const services = [
           </p>
         </div>
       </RouterLink>
-      <!-- Spacer to maintain container height -->
-      <div class="h-96"></div>
     </div>
   </div>
 </template>

@@ -17,14 +17,15 @@ import VideoRestaurent from "@/widget/Restaurent/VideoRestaurent.vue";
   <div class="max-w-7xl mx-auto">
     <SearchBooking />
     <BestHotel />
-    <FeaturedDestinations />
   </div>
+
+  <div class="max-w-7xl mx-auto"><FeaturedDestinations /></div>
 
   <div class="bg-gradient-to-b from-white via-gray-50 to-white">
     <OurService />
   </div>
 
-  <div class="max-w-7xl mx-auto py-20">
+  <div class="max-w-7xl mx-auto py-4">
     <WhyChooseUs />
   </div>
 

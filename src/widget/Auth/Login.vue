@@ -6,6 +6,12 @@ import { useRouter } from "vue-router";
 import { toast } from "vue-sonner";
 
 const router = useRouter();
+const Loading = ref(false);
+
+const setCookie = (name, value, days = 7) => {
+  const expires = new Date(Date.now() + days * 864e5).toUTCString();
+  document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=/`;
+};
 const showPassword = ref(false);
 const formData = ref({
   email: "",
@@ -20,11 +26,18 @@ const handleSubmit = async () => {
   }
 
   try {
-    const response = await authservice.Login(email, password);
-    localStorage.setItem("auth_token", response.token);
-    localStorage.setItem("user", JSON.stringify(response.user));
+    Loading.value = true;
+    const data = {
+      email,
+      password,
+    };
+    const response = await authservice.Login(data);
+    Loading.value = false;
+    setCookie("auth_token", response.token, 7);
+    setCookie("user", JSON.stringify(response.user), 7);
     router.push("/");
   } catch (error) {
+    Loading.value = false;
     toast.error("Login failed. Please check your credentials.");
   }
 };
@@ -106,7 +119,32 @@ const handleSubmit = async () => {
           type="submit"
           class="w-full py-3 px-6 rounded-xl bg-gradient-to-r from-gold to-gold-light text-navy-dark font-semibold hover:shadow-gold-glow transition-all duration-300 transform hover:scale-[1.02]"
         >
-          Sign In
+          <span v-if="!Loading">Sign In</span>
+          <svg
+            v-if="Loading"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 300 150"
+            class="w-full h-10"
+          >
+            <path
+              fill="none"
+              stroke="#000000"
+              stroke-width="15"
+              stroke-linecap="round"
+              stroke-dasharray="300 385"
+              stroke-dashoffset="0"
+              d="M275 75c0 31-27 50-50 50-58 0-92-100-150-100-28 0-50 22-50 50s23 50 50 50c58 0 92-100 150-100 24 0 50 19 50 50Z"
+            >
+              <animate
+                attributeName="stroke-dashoffset"
+                calcMode="spline"
+                dur="2"
+                values="685;-685"
+                keySplines="0 0 1 1"
+                repeatCount="indefinite"
+              ></animate>
+            </path>
+          </svg>
         </button>
       </form>
 

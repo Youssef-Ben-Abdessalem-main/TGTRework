@@ -3,7 +3,10 @@ import { apiClient } from "./api.js";
 export const authservice = {
   async SignUp(payload) {
     try {
-      const response = await apiClient.post("/utilisateur/registeruser", payload);
+      const response = await apiClient.post(
+        "/utilisateur/registeruser",
+        payload
+      );
       return response;
     } catch (error) {
       console.error("Error signing up:", error);
@@ -21,4 +24,3 @@ export const authservice = {
     }
   },
 };
-

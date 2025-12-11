@@ -17,9 +17,9 @@ function handleDetailsClick(tab) {
 <template>
   <div
     @click="handleDetailsClick(name)"
-    class="mx-5 w-full group relative overflow-hidden rounded-2xl bg-ocean-mid backdrop-blur-sm border border-white/10 hover:border-gold/30 transition-all duration-500 cursor-pointer"
+    class="mx-5 w-full group relative overflow-hidden rounded-2xl bg-sand-mid backdrop-blur-sm border border-white/10 hover:border-gold/30 transition-all duration-500 cursor-pointer"
   >
-    <div class="relative h-48 overflow-hidden">
+    <div class="relative h-52 overflow-hidden">
       <img
         :src="image || museumPlaceholder"
         :alt="name"
@@ -27,7 +27,7 @@ function handleDetailsClick(tab) {
         class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
       />
       <div
-        class="absolute inset-0 bg-gradient-to-t from-ocean-mid via-sand-mid/20 to-transparent"
+        class="absolute inset-0 bg-gradient-to-t from-sand-mid/50 via-sand-mid/20 to-transparent"
       />
 
       <div class="absolute top-3 left-3">

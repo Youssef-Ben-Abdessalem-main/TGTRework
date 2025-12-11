@@ -1,72 +1,15 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from "vue";
 import EventCard from "./Components/EventCard.vue";
+import { EventsService } from "@/services/events.js";
 
-const popularEvents = [
-  {
-    id: 1,
-    title: "Laazara Band in concert at Vega Djerba",
-    location: "Djerba Midoun Tourist Area, Djerba, Tunisia",
-    image:
-      "https://cdn.tunisiagotravel.com/unsafe/1045x384/smart/activities/events/laazara.webp",
-    date: "1 mai 2025",
-    status: "Past",
-    link: "/events/laazara-band-en-concert-a-vega-djerba",
-  },
-  {
-    id: 2,
-    title: "Jazz Festival Carthage 2025",
-    location: "Carthage Amphitheatre, Tunis, Tunisia",
-    image:
-      "https://www.tekiano.com/wp-content/uploads/2025/07/ibrahim-maalouf-carthage.jpg",
-    date: "15 juillet 2025",
-    status: "Upcoming",
-    link: "/events/jazz-festival-carthage-2025",
-  },
-  {
-    id: 3,
-    title: "Sousse Summer Festival",
-    location: "Sousse Medina, Sousse, Tunisia",
-    image:
-      "https://thearabweekly.com/sites/default/files/styles/article_image_800x450_/public/empictures/b500/_1371_62.jpg?itok=BTV02ygT",
-    date: "20 août 2025",
-    status: "Upcoming",
-    link: "/events/sousse-summer-festival",
-  },
-  {
-    id: 4,
-    title: "Djerba Cultural Night",
-    location: "Houmt Souk, Djerba, Tunisia",
-    image:
-      "https://tmo-mag.com.tn/wp-content/uploads/2025/11/Djerba-Music-Land-Festival.webp",
-    date: "10 septembre 2025",
-    status: "Upcoming",
-    link: "/events/djerba-cultural-night",
-  },
-  {
-    id: 5,
-    title: "Mahdia Beach Music Festival",
-    location: "Mahdia Beach Resort, Mahdia, Tunisia",
-    image: "https://en.mahdia-beach.com/wp-content/uploads/2022/12/Eljem2.jpg",
-    date: "5 juin 2025",
-    status: "Upcoming",
-    link: "/events/mahdia-beach-music-festival",
-  },
-  {
-    id: 6,
-    title: "Hammamet International Festival",
-    location: "Hammamet Cultural Center, Hammamet, Tunisia",
-    image: "https://en.soundlightup.com/wp-content/uploads/2023/02/Nexo_Hammamet_FB.jpg",
-    date: "25 juillet 2025",
-    status: "Upcoming",
-    link: "/events/hammamet-international-festival",
-  },
-];
+const popularEvents = ref([]);
+const isLoading = ref(true);
 
 const currentSlide = ref(0);
 const itemsPerSlide = ref(3);
 const slideWidth = computed(() => 100 / itemsPerSlide.value);
-const totalSlides = computed(() => Math.ceil(popularEvents.length / itemsPerSlide.value));
+const totalSlides = computed(() => Math.ceil(popularEvents.value.length / itemsPerSlide.value));
 
 const updateItemsPerSlide = () => {
   const width = window.innerWidth;
@@ -113,10 +56,18 @@ const getShortMonth = (month) => {
 
 let autoplayInterval;
 
-onMounted(() => {
+onMounted(async () => {
+  try {
+    popularEvents.value = await EventsService.get_featured_events();
+  } catch (error) {
+    console.error("Failed to load events:", error);
+  } finally {
+    isLoading.value = false;
+  }
+
   updateItemsPerSlide();
   window.addEventListener("resize", updateItemsPerSlide);
-  autoplayInterval = setInterval(nextSlide, 5000);
+  // autoplayInterval = setInterval(nextSlide, 5000);
 });
 
 onUnmounted(() => {
@@ -169,8 +120,15 @@ onUnmounted(() => {
         </p>
       </div>
 
-      <div class="relative overflow-hidden">
+      <div class="relative">
+        <div v-if="isLoading" class="flex items-stretch">
+          <div v-for="i in 3" :key="i" class="flex-shrink-0 px-4" :style="{ width: slideWidth + '%' }">
+            <div class="w-96 h-[300px] bg-gray-200 animate-pulse rounded-lg"></div>
+          </div>
+        </div>
+        
         <div
+          v-else
           class="flex transition-transform duration-500 ease-in-out items-stretch"
           :style="{ transform: `translateX(-${currentSlide * 100}%)` }"
         >
@@ -182,7 +140,8 @@ onUnmounted(() => {
           >
             <EventCard
               :title="event.title"
-              :location="event.location"
+              :slug="event.slug"
+              :location="event.location || 'Tunisia'"
               :date="event.date"
               :image="event.image"
               :status="event.status.toLowerCase()"

@@ -68,7 +68,7 @@ const handleSubmit = async () => {
     toast.success("Account created successfully!");
     router.push("/auth/login");
   } catch (error) {
-    toast.error("Sign up failed. Please try again.");
+    Loading.value = false;
   }
 };
 </script>

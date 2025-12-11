@@ -1,5 +1,9 @@
 <script setup>
 import { Shield, Clock, Users, Award, Headphones, MapPin } from "lucide-vue-next";
+import { Skeleton } from "@/components/ui/skeleton";
+import { ref, onMounted } from "vue";
+
+const isLoading = ref(true);
 
 const features = [
   {
@@ -33,13 +37,47 @@ const features = [
     description: "Off-the-beaten-path destinations and local insights",
   },
 ];
+
+onMounted(() => {
+  setTimeout(() => {
+    isLoading.value = false;
+  }, 1200);
+});
 </script>
 
 <template>
-  <section id="about" class="py-20 md:py-28">
+  <section id="about" class="py-4">
     <div class="container mx-auto px-4">
       <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-        <div class="relative">
+        <!-- Image Grid Skeleton -->
+        <div v-if="isLoading" class="relative">
+          <div class="grid grid-cols-2 gap-4">
+            <div class="space-y-4">
+              <Skeleton class="w-full h-48 rounded-2xl" />
+              <Skeleton class="w-full h-64 rounded-2xl" />
+            </div>
+            <div class="space-y-4 pt-8">
+              <Skeleton class="w-full h-64 rounded-2xl" />
+              <Skeleton class="w-full h-48 rounded-2xl" />
+            </div>
+          </div>
+          <div
+            class="absolute -bottom-6 left-1/2 -translate-x-1/2 bg-white rounded-2xl shadow-xl p-6 border border-border"
+          >
+            <div class="flex gap-8">
+              <div class="text-center">
+                <Skeleton class="h-8 w-12 mb-2" />
+                <Skeleton class="h-4 w-20" />
+              </div>
+              <div class="text-center border-l border-border pl-8">
+                <Skeleton class="h-8 w-12 mb-2" />
+                <Skeleton class="h-4 w-20" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div v-else class="relative">
           <div class="grid grid-cols-2 gap-4">
             <div class="space-y-4">
               <div class="rounded-2xl overflow-hidden">
@@ -80,19 +118,40 @@ const features = [
           >
             <div class="flex gap-8">
               <div class="text-center">
-                <div class="font-serif text-3xl text-sand-mid">15+</div>
+                <div class="font-serif text-3xl text-ocean-deep">15+</div>
                 <div class="text-sm text-gray-700">Years Experience</div>
               </div>
               <div class="text-center border-l border-border pl-8">
-                <div class="font-serif text-3xl text-sand-mid">50K+</div>
+                <div class="font-serif text-3xl text-ocean-deep">50K+</div>
                 <div class="text-sm text-gray-700">Happy Travelers</div>
               </div>
             </div>
           </div>
         </div>
 
-        <div>
-          <p class="text-sand-mid font-medium uppercase tracking-wider mb-2">
+        <!-- Content Skeleton -->
+        <div v-if="isLoading">
+          <Skeleton class="h-6 w-32 mb-2" />
+          <Skeleton class="h-12 w-full mb-4" />
+          <Skeleton class="h-12 w-3/4 mb-6" />
+          <div class="space-y-4 mb-8">
+            <Skeleton class="h-4 w-full" />
+            <Skeleton class="h-4 w-5/6" />
+            <Skeleton class="h-4 w-4/5" />
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div v-for="i in 6" :key="i" class="flex gap-4">
+              <Skeleton class="w-12 h-12 rounded-xl" />
+              <div class="flex-1">
+                <Skeleton class="h-5 w-24 mb-1" />
+                <Skeleton class="h-4 w-full" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div v-else>
+          <p class="text-ocean-deep font-bold uppercase text-xl tracking-wider mb-2">
             Why Choose Us
           </p>
           <h2 class="font-serif text-3xl md:text-5xl text-foreground mb-6 text-balance">
@@ -109,10 +168,10 @@ const features = [
               <div
                 class="flex-shrink-0 w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center"
               >
-                <component :is="feature.icon" class="h-6 w-6 text-sand-mid" />
+                <component :is="feature.icon" class="h-6 w-6 text-ocean-deep" />
               </div>
               <div>
-                <h3 class="font-medium text-sand-mid mb-1">{{ feature.title }}</h3>
+                <h3 class="font-medium text-ocean-deep mb-1">{{ feature.title }}</h3>
                 <p class="text-sm text-muted-foreground">{{ feature.description }}</p>
               </div>
             </div>

@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { CalendarDays, ArrowRight } from "lucide-vue-next";
 import Button from "@/components/ui/button/Button.vue";
 import { TabsContent, TabsRoot } from "reka-ui";
@@ -9,20 +9,31 @@ import FlightSearch from "@/widget/SearchBooking/components/FlightSearch.vue";
 import RestaurantSearch from "@/widget/SearchBooking/components/RestaurantSearch.vue";
 import EventSearch from "@/widget/SearchBooking/components/EventSearch.vue";
 import Transport from "@/widget/Views/Transport.vue";
+import { DestinationService } from "@/services/destination";
 
 const activeTab = ref("hotels");
+
+const Destinations = ref(null);
+
+onMounted(async () => {
+  try {
+    Destinations.value = await DestinationService.get_destinations_list();
+  } catch (error) {
+    console.error("Error fetching destinations:", error);
+  }
+});
 </script>
 
 <template>
-  <section class="relative z-30 -mt-16 md:-mt-24 overflow-hidden">
+  <section class="relative z-30 -mt-16 md:-mt-24">
     <div
-      class="shadow-xl rounded-tl-3xl border-t-4 border-sand-mid overflow-hidden w-full bg-white backdrop-blur-sm"
+      class="shadow-xl rounded-tl-3xl border-t-4 border-sand-mid w-full bg-white backdrop-blur-sm"
     >
       <TabsRoot v-model="activeTab" class="w-full">
         <SearchTabs :active-tab="activeTab" />
 
         <TabsContent value="hotels" class="mt-0 p-8">
-          <HotelSearch />
+          <HotelSearch :destinations="Destinations" />
         </TabsContent>
 
         <TabsContent value="flights" class="mt-0 p-8">
@@ -30,11 +41,11 @@ const activeTab = ref("hotels");
         </TabsContent>
 
         <TabsContent value="restaurants" class="mt-0 p-8">
-          <RestaurantSearch />
+          <RestaurantSearch :destinations="Destinations" />
         </TabsContent>
 
         <TabsContent value="events" class="mt-0 p-8">
-          <EventSearch />
+          <EventSearch :destinations="Destinations" />
         </TabsContent>
       </TabsRoot>
 
@@ -52,14 +63,6 @@ const activeTab = ref("hotels");
             </p>
           </div>
         </div>
-        <Button
-          variant="outline"
-          size="sm"
-          class="gap-2 bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 hover:border-gray-300 rounded-lg shadow-sm transition-all font-medium"
-        >
-          View All Deals
-          <ArrowRight class="h-4 w-4" />
-        </Button>
       </div>
     </div>
   </section>

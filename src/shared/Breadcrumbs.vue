@@ -29,7 +29,7 @@ const props = defineProps({
 </style>
 
 <template>
-  <section class="relative h-[550px] overflow-hidden w-full">
+  <section class="relative h-[500px] overflow-hidden w-full">
     <div class="absolute inset-0">
       <img :src="image" :alt="title" class="w-full h-full object-cover scale-110" />
     </div>

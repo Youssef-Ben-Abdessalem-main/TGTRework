@@ -1,38 +1,37 @@
-import axios from 'axios'
+import axios from "axios";
+import { toast } from "vue-sonner";
 
-// Base API configuration
-const API_BASE_URL = 'https://test.tunisiagotravel.com'
+const API_BASE_URL = "https://test.tunisiagotravel.com";
 
-// Create axios instance with default config
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
   timeout: 10000,
   headers: {
-    'Content-Type': 'application/json',
-    'Accept': 'application/json'
-  }
-})
+    "Content-Type": "application/json",
+    Accept: "application/json",
+  },
+});
 
-// Request interceptor
 apiClient.interceptors.request.use(
   (config) => {
-    // Add auth token if available
-    const token = localStorage.getItem('auth_token')
+    const token = localStorage.getItem("auth_token");
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`
+      config.headers.Authorization = `Bearer ${token}`;
     }
-    return config
+    return config;
   },
   (error) => Promise.reject(error)
-)
+);
 
-// Response interceptor
 apiClient.interceptors.response.use(
   (response) => response.data,
   (error) => {
-    console.error('API Error:', error.response?.data || error.message)
-    return Promise.reject(error)
+    toast.error(
+      error.response?.data.error ||
+        "An error occurred while processing your request."
+    );
+    return Promise.reject(error);
   }
-)
+);
 
-export { apiClient, API_BASE_URL }
+export { apiClient, API_BASE_URL };

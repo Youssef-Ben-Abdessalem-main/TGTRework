@@ -1,5 +1,13 @@
 <script setup>
-import { MapPin, ArrowRight } from "lucide-vue-next";
+import {
+  MapPin,
+  ArrowRight,
+  User,
+  Calendar,
+  MapPinHouseIcon,
+  Calendar1,
+  LocateIcon,
+} from "lucide-vue-next";
 
 const props = defineProps({
   title: String,
@@ -7,6 +15,7 @@ const props = defineProps({
   date: String,
   image: String,
   status: String,
+  slug: String,
   index: Number,
 });
 
@@ -21,119 +30,105 @@ const getDateParts = (dateString) => {
 
 const getShortMonth = (month) => {
   const monthMap = {
-    Janvier: "Jan",
-    Février: "Fév",
-    Mars: "Mar",
-    Avril: "Avr",
-    Mai: "Mai",
-    Juin: "Jun",
-    Juillet: "Jul",
-    Août: "Aoû",
-    Septembre: "Sep",
-    Octobre: "Oct",
-    Novembre: "Nov",
-    Décembre: "Déc",
+    jan: "Jan",
+    févr: "Feb",
+    mar: "Mar",
+    avr: "Apr",
+    mai: "May",
+    jui: "Jun",
+    jui: "Jul",
+    aoû: "Aug",
+    sep: "Sep",
+    oct: "Oct",
+    nov: "Nov",
+    déc: "Dec",
   };
   return monthMap[month] || month.slice(0, 3);
 };
 
 const dateParts = getDateParts(props.date);
-const isUpcoming = props.status === "upcoming";
 </script>
 
 <template>
-  <a
-    href="#"
-    class="group relative flex flex-col h-[330px] rounded-2xl overflow-hidden bg-white border border-gray-200 hover:border-gold/40 shadow-lg hover:shadow-2xl hover:shadow-gold/10 transition-all duration-500 cursor-pointer"
-  >
-    <div class="relative h-52 overflow-hidden">
-      <img
-        :src="image"
-        :alt="title"
-        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-      />
-
-      <div
-        class="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent opacity-60"
-      />
-
-      <div class="absolute top-4 left-4">
-        <span
-          :class="[
-            'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold backdrop-blur-sm transition-all duration-300',
-            isUpcoming
-              ? 'bg-emerald-500/90 text-white shadow-lg shadow-emerald-500/30'
-              : 'bg-rose-500/90 text-white shadow-lg shadow-rose-500/30',
-          ]"
-        >
-          <span
-            :class="[
-              'w-1.5 h-1.5 rounded-full',
-              isUpcoming ? 'bg-white animate-pulse' : 'bg-white/70',
-            ]"
-          />
-          {{ isUpcoming ? "Coming Soon" : "Expired" }}
-        </span>
-      </div>
-
-      <div class="absolute top-4 right-4">
-        <div class="relative">
-          <div
-            class="absolute inset-0 bg-gradient-to-br from-sand-mid via-sand-light to-gold rounded-xl blur-sm opacity-50"
+  <div class="flip-card w-96 h-[300px] relative">
+    <div class="flip-card-inner w-full h-full">
+      <div class="flip-card-front bg-white shadow-xl rounded-lg overflow-hidden">
+        <div class="relative h-full">
+          <img
+            :src="props.image"
+            alt="Students viewing art"
+            class="w-full h-full object-cover"
           />
           <div
-            class="relative bg-gradient-to-br from-ocean-mid to-navy p-3 rounded-xl text-center min-w-[70px] border border-sand-mid/30 shadow-xl"
+            class="absolute top-0 left-0 bg-gradient-to-br from-sand-mid via-sand-mid/50 to-transparent flex justify-center items-center flex-col w-16 h-16 rounded-br-xl text-white font-bold text-center"
           >
-            <div class="text-2xl font-black text-white leading-none">
-              {{ dateParts.day }}
-            </div>
-            <div class="text-sm font-bold text-white/70 uppercase tracking-wide">
-              {{ getShortMonth(dateParts.month) }}
-            </div>
-            <div class="text-[10px] text-gray-400 mt-0.5">
-              {{ dateParts.year }}
-            </div>
+            <span class="block text-xl">22</span>
+            <span class="block text-sm uppercase">Mar</span>
+          </div>
+          <div class="absolute inset-x-0 bottom-0 glass p-4 text-white">
+            <h2 class="text-md font-semibold">{{ props.title }}</h2>
           </div>
         </div>
       </div>
-    </div>
-
-    <div class="flex flex-col flex-1 p-5">
-      <h3
-        class="text-gray-900 font-bold text-lg leading-tight line-clamp-2 group-hover:text-ocean-mid transition-colors duration-300 mb-3"
-      >
-        {{ title }}
-      </h3>
-
-      <div class="flex items-start gap-2 text-gray-600 mt-auto">
-        <MapPin class="w-4 h-4 text-ocean-mid shrink-0 mt-0.5" />
-        <span class="text-sm line-clamp-2">{{ location }}</span>
-      </div>
 
       <div
-        class="absolute bottom-5 right-5 opacity-0 group-hover:opacity-100 transform translate-x-2 group-hover:translate-x-0 transition-all duration-300"
+        class="flip-card-back bg-sand-mid shadow-xl rounded-lg p-8 flex flex-col justify-between relative"
       >
-        <RouterLink :to="`/events/${title}`">
-          <div
-            class="w-10 h-10 rounded-full bg-ocean-mid/10 border border-ocean-mid/30 flex items-center justify-center"
-          >
-            <ArrowRight class="w-5 h-5 text-ocean-mid" />
+        <div>
+          <h2 class="text-white text-md font-bold mb-6">{{ props.title }}</h2>
+
+          <div class="space-y-2 text-white">
+            <div class="flex items-center space-x-4 border-b border-white/30 pb-1">
+              <span class="text-xs"> <Calendar1 /> </span>
+              <span class="text-xs">
+                {{ getShortMonth(dateParts.month) }} {{ dateParts.day }} ,
+                {{ dateParts?.year }}
+              </span>
+            </div>
+            <div class="flex items-center space-x-4 border-b border-white/30 pb-1">
+              <span class="text-xs"> <LocateIcon /> </span>
+              <span class="text-xs">
+                {{ props.location }}
+              </span>
+            </div>
           </div>
+        </div>
+        <RouterLink :to="`/events/${slug}`">
+          <button
+            class="w-full bg-white absolute bottom-0 left-0 text-sand-mid font-bold py-3 mt-8 transition duration-300"
+          >
+            View Details
+          </button>
         </RouterLink>
       </div>
     </div>
-
-    <div
-      class="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-ocean-mid/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-    />
-  </a>
+  </div>
 </template>
-
 <style scoped>
-.line-clamp-2 {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+.flip-card {
+  perspective: 1000px;
+}
+
+.flip-card-inner {
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+
+.flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front,
+.flip-card-back {
+  backface-visibility: hidden;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+.flip-card-back {
+  transform: rotateY(180deg);
 }
 </style>
